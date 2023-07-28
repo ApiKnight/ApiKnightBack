@@ -39,7 +39,7 @@ module.exports = app => {
     dialectOptions: {
       dateStrings: true,
       typeCast: true
-    },
+    }
   }
 
   /**

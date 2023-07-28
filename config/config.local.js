@@ -10,7 +10,7 @@ module.exports = app => {
 
   config.sequelize = {
     // 连接用户
-    username: 'admin',
+    username: 'root',
     // 连接密码
     password: '123456',
     // 连接的数据库，可根据需要改成已有的数据库
