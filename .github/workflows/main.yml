@@ -1,0 +1,29 @@
+name: test-ssh
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH to server and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.REMOTE_PASS }}
+          script: |
+            cd /home/test/egg-node
+            rm -rf *
+            git clone https://github.com/1379255913/test-action.git .
+            npm install
+            npm run dev
