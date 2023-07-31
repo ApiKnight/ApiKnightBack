@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Template Node Egg
 
 基于 Egg.js 的后端脚手架。
@@ -23,3 +24,7 @@ yarn run stop
 ## License
 
 [MIT](/LICENSE)
+=======
+# ApiKnightBack
+HTTP 接口管理平台的后台
+>>>>>>> origin/ljt
