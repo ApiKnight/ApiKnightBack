@@ -1,150 +1,162 @@
 'use strict'
-
 const Controller = require('egg').Controller
-
 /**
  * @controller User 用户模块
  */
-
 class UserController extends Controller {
   /**
-   * @summary 模拟登录
-   * @description 通过 mock 的方式登录
-   * @router get /v1/user/mock
-   * @request query string *userId 用户 id
-   * @response 0 UserInfo
+   * @summary 注册
+   * @description 注册用户信息
+   * @router post /v1/user/register
+   * @request body RequestRegister
+   * @response 200 ResponseRegister 注册成功
+   * @response 400 ErrorResponse 注册失败参数问题
+   * @response 409 ErrorResponseAlreadyRegistered 邮箱已被注册
    */
-  async mock() {
-    const { service, request, validate, session, rotateCsrfSecret, helper } = this.ctx
-    const { userId } = request.query
-
-    // 参数校验
-    const rules = {
-      userId: { required: true, message: '用户标识不能为空' }
-    }
-    const passed = await validate.call(this, rules, request.query)
-    if (!passed) return
-
-    const data = await service.user.info(userId)
-    if (data) {
-      session.userId = data.id
-      session.openId = data.openId
-      session.nickName = data.nickName
-      rotateCsrfSecret.call(this)
-      helper.success(data)
-    } else {
-      helper.error(null, '用户不存在')
-    }
-  }
-
-  /**
-   * @summary 小程序登录
-   * @description 目前仅支持微信小程序登录
-   * @router post /v1/user/login
-   * @request body RequestLogin
-   * @response 0 UserInfo
-   */
-  async login() {
-    const { service, helper, session, request, validate, rotateCsrfSecret, rule } = this.ctx
-    const { code, nickName, avatarUrl, phone, gender, province, city, language } = request.body
-
-    // 参数校验
-    const passed = await validate.call(this, rule.RequestLogin, request.body)
-    if (!passed) return
-
-    // 微信登录凭证校验，通过 code 换取用户信息，包含 openId 和 unionId
-    const token = await service.wechatApp.code2Session(code)
-    if (!token) {
-      helper.error(null, '微信登录鉴权失败')
-      return
-    }
-
-    const { openId, unionId } = token
-    const data = await service.user.login({
-      openId, unionId, nickName, avatarUrl, phone, gender, province, city, language
-    })
-    if (data) {
-      session.userId = data.id
-      session.openId = data.openId
-      session.nickName = data.nickName
-      rotateCsrfSecret.call(this)
-      delete data.unionId
-      delete data.password
-      helper.success(data)
-    } else {
-      helper.error(null, '授权出现未知错误')
-    }
-  }
-
-  /**
-   * @summary 解密手机号码信息
-   * @description 获取用户当前绑定的手机号码
-   * @router post /v1/user/phone
-   * @request body RequestPhone
-   * @response 0 UserInfo
-   */
-  async phone() {
-    const { service, helper, session, request, validate, rule } = this.ctx
-    const { userId, code } = request.body
-
-    // 参数校验（复用 egg-swagger-doc 结构来校验）
-    const passed = await validate.call(this, rule.RequestPhone, request.body)
-    if (!passed) return
-
-    const token = await service.wechatApp.accessToken()
-    const phoneData = await service.wechatApp.getPhoneNumber(token.accessToken, code)
-    if (phoneData) {
-      // 保存手机号
-      const data = await service.user.savePhone(userId, phoneData.phoneNumber, session.openId)
-      if (data) {
-        helper.success()
-      } else {
-        helper.error(null, '手机号保存失败')
+  async register() {
+    const ctx = this.ctx
+    const { service, helper, request, validate, rule } = this.ctx
+    try {
+      // 参数校验
+      const passed = await validate.call(this, rule.RequestRegister, request.body)
+      if (!passed) {
+        const err = new Error('参数验证错误');
+        err.status = 400;
+        throw err;
       }
-    } else {
-      helper.error(null, '手机号授权异常')
+      const { username, email, password, phone, avatar_url } = ctx.request.body;
+      const hashedPassword = await ctx.hashPassword(password); // 使用 bcrypt 进行密码加密
+      const user = await ctx.service.user.create({ username, email, password: hashedPassword, phone, avatar_url });
+      //不返回密码
+      delete user.password;
+      helper.success(user, '注册成功')
+    } catch (error) {
+      console.error(error);
+      helper.error(error.status, error.message)
+    }
+  }
+  /**
+ * @summary 登录
+ * @description 使用用户名或者邮箱登录
+ * @router post /v1/user/login
+ * @request body RequestLogin
+ * @response 200 ResponseLogin 登录成功
+ * @response 400 ErrorResponse 参数问题登录失败
+ * @response 401 ResponseLoginFailed 登录失败,用户名或密码错误
+ */
+  async login() {
+    const { service, helper, request, validate, rule } = this.ctx
+    const { usernameOrEmail, password } = request.body;
+    try {
+      // 参数校验
+      const passed = await validate.call(this, rule.RequestLogin, request.body)
+      if (!passed) {
+        const err = new Error('参数验证错误');
+        err.status = 400;
+        throw err;
+      }
+      // 调用 Service 进行登陆
+      const { userObject: user, token } = await service.user.login({ usernameOrEmail, password });
+      // 返回用户信息和 token
+      helper.success({ user, token }, "登录成功");
+    } catch (err) {
+      // 将错误信息返回给客户端
+      helper.error(err.status, err.message)
+    }
+  }
+  /**
+ * @summary 修改个人信息
+ * @description 修改个人信息,username,email,phone都是可选的
+ * @router post /v1/user/update
+ * @request body RequestUpdateUser
+ * @response 200 ResponseUpdate 登录成功
+ * @response 400 ErrorResponse 参数问题登录失败
+ * @response 409 ErrorResponseAlreadyRegistered 提供的username,email,phone已被注册
+ * @response 601 ErrorResponseUnauthorized 未登录
+ */
+  async update() {
+    const { service, helper, request, validate, rule } = this.ctx
+    const { ctx } = this;
+    try {
+      // 获取用户ID和请求参数
+      const userId = ctx.state.user.id;
+      // 参数校验
+      const passed = await validate.call(this, rule.RequestUpdateUser, request.body)
+      if (!passed) {
+        const err = new Error('参数验证错误');
+        err.status = 400;
+        throw err;
+      }
+      const { username, email, phone, password } = request.body;
+      // 调用服务更新用户信息
+      let result = await ctx.service.user.update(userId, { username, email, phone, password });
+      //不返回password
+      const { password: _, ...resresult } = result.toJSON();
+      // 返回成功响应
+      helper.success(resresult, "更新成功");
+    } catch (err) {
+      // 将错误信息返回给客户端
+      helper.error(err.status, err.message)
     }
   }
 
-  /**
-   * @summary 获取用户信息
-   * @description 只有登录成功了才会返回用户信息
-   * @router get /v1/user/info
-   * @response 0 UserInfo
-   */
   async info() {
-    const { service, helper, session } = this.ctx
-    const data = await service.user.info(session.userId)
-    if (data) {
-      helper.success(data)
-    } else {
-      helper.error(null, '用户信息获取失败')
-    }
+    const { service, helper, request, validate } = this.ctx
+    const result = await service.user.info();
+    helper.success(result, "获取成功")
   }
-
   /**
-   * @summary 登出
-   * @description 退出登录
-   * @router get /v1/user/logout
-   * @response 0
-   */
-  async logout() {
-    const { helper, session } = this.ctx
-    session.userId = null
-    session.openId = null
-    session.nickName = null
-    helper.success()
-  }
-
-  async info1() {
-    const { service, helper, session } = this.ctx
-    const data = await service.user1.info(1)
-    if (data) {
-      helper.success(data)
-    } else {
-      helper.error(null, '用户信息获取失败')
+ * @summary 修改个人信息
+ * @description 修改个人信息,username,email,phone都是可选的
+ * @router post /v1/user/checkExist
+ * @request body RequestcheckExist
+ * @response 200 ResponsecheckExist 请求成功
+ * @response 400 ErrorResponse 参数问题登录失败
+ * @response 409 ErrorResponseAlreadyRegistered 提供的username,email,phone已被注册
+ * @response 601 ErrorResponseUnauthorized 未登录
+ */
+  async checkExist() {
+    const { service, helper, request, validate, rule } = this.ctx
+    const { email, username, phone } = request.body
+    try {
+      const passed = await validate.call(this, rule.RequestcheckExist, request.body)
+      if (!passed) {
+        const err = new Error('参数验证错误');
+        err.status = 400;
+        throw err;
+      }
+      if (email) {
+        const result = await service.user.isEmailRegistered(email);
+        if (result) {
+          const err = new Error('邮箱已注册');
+          err.status = 409;
+          throw err;
+        }
+      }
+      if (username) {
+        const result = await service.user.isUsernameRegistered(username);
+        console.log("用户名在这", result);
+        if (result) {
+          const err = new Error('用户名已注册');
+          err.status = 409;
+          throw err;
+        }
+      }
+      console.log("333333");
+      if (phone) {
+        const result = await service.user.isPhoneRegistered(phone);
+        if (result) {
+          const err = new Error('用户名已注册');
+          err.status = 409;
+          throw err;
+        }
+      }
+      helper.success(null, "未注册")
+    } catch (error) {
+      helper.error(error.status, error.message)
     }
   }
-}
 
+
+}
 module.exports = UserController

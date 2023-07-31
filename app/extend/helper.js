@@ -1,5 +1,5 @@
 'use strict'
-
+const jwt = require('jsonwebtoken');
 const os = require('os')
 const { v4: uuidv4 } = require('uuid')
 const WechatCrypt = require('./wechatCrypt')
@@ -8,7 +8,7 @@ const WechatCrypt = require('./wechatCrypt')
  * 新旧接口兼容的版本号标识，有不兼容的代码时更新该版本号，主要为了应对审核以及通过 24h 内没有更新到最新版本的用户
  * 当需要发新版本时，用户已全部更新到最新版本，所以每次只要有不兼容的更新，只需要更新该版本号即可
  */
-const version = [ 1, 0, 0 ]
+const version = [1, 0, 0]
 
 module.exports = {
   /**
@@ -134,22 +134,29 @@ module.exports = {
    */
   success(data, message) {
     const { ctx } = this
-    ctx.body = {
-      ...ctx.app.config.resCode.success,
-      data,
-      message
+    if (data) {
+      ctx.body = {
+        ...ctx.app.config.resCode.success,
+        data,
+        message
+      }
+    } else {
+      ctx.body = {
+        ...ctx.app.config.resCode.success,
+        message
+      }
     }
+
   },
   /**
    * 参数异常
    * @param {object} data 响应数据，可以是对象或者数组
    * @param {string} message 提示信息
    */
-  error(data, message) {
+  error(code, message) {
     const { ctx } = this
     ctx.body = {
-      ...ctx.app.config.resCode.error,
-      data,
+      code,
       message
     }
   },
@@ -159,5 +166,12 @@ module.exports = {
   notLogged() {
     const { ctx } = this
     ctx.body = ctx.app.config.resCode.notLogged
+  },
+
+  nopermission() {
+    const { ctx } = this
+    ctx.body = ctx.app.config.resCode.nopermission
   }
+
+
 }

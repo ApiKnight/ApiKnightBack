@@ -1,12 +1,11 @@
 'use strict'
 
 const Controller = require('egg').Controller
-
+/**
+ * @controller Home模块
+ */
 class HomeController extends Controller {
-  async index() {
-    const { ctx } = this
-    ctx.body = '首页'
-  }
+
 }
 
 module.exports = HomeController
