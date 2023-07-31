@@ -1,7 +1,7 @@
 {
   "name": "api-knight-backend",
   "version": "0.1.0",
-  "description": "基于 Egg.js 的HTTP接口管理平台后端。",
+  "description": "基于 Egg.js 的HTTP接口管理平台后端",
   "private": true,
   "egg": {
     "declarations": true
@@ -41,7 +41,8 @@
     "egg-ci": "^1.19.0",
     "egg-mock": "^4.2.0",
     "eslint": "^8.5.0",
-    "eslint-config-egg": "^10.0.0"
+    "eslint-config-egg": "^12.2.1",
+    "msw": "^1.2.3"
   },
   "engines": {
     "node": ">=10.0.0"
