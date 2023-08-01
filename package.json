@@ -41,8 +41,7 @@
     "egg-ci": "^1.19.0",
     "egg-mock": "^4.2.0",
     "eslint": "^8.5.0",
-    "eslint-config-egg": "^12.2.1",
-    "msw": "^1.2.3"
+    "eslint-config-egg": "^12.2.1"
   },
   "engines": {
     "node": ">=10.0.0"
