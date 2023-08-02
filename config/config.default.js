@@ -18,7 +18,7 @@ module.exports = app => {
   /**
    * 中间件配置
    */
-  config.middleware = [ 'catchError', 'permission' ]
+  config.middleware = ['catchError', 'permission']
 
   /**
    * 数据库相关配置
@@ -39,7 +39,7 @@ module.exports = app => {
     dialectOptions: {
       dateStrings: true,
       typeCast: true
-    }
+    },
   }
 
   /**
@@ -47,6 +47,8 @@ module.exports = app => {
    */
   // 接口前缀名称，跟随业务系统修改
   const apiPrefixName = 'api'
+  // 接口前缀名称，跟随业务系统修改
+  const permissionapiPrefixName = 'api'
   // 接口完整前缀
   const apiPrefix = `/${apiPrefixName}`
   const userConfig = {
@@ -59,11 +61,13 @@ module.exports = app => {
       // 服务器异常的 code 标识和提示，一般都不需要改
       serverError: { code: 500, message: '服务器异常' },
       // 成功的 code 标识
-      success: { code: 0 },
+      success: { code: 200 },
       // 出错的 code 标识和提示
-      error: { code: 602, message: '参数异常' },
+      error: { code: 400, message: '参数异常' },
       // 未登录的 code 标识和提示
-      notLogged: { code: 601, message: '请先登录后再操作' }
+      notLogged: { code: 601, message: '请先登录后再操作' },
+      //没有权限
+      nopermission: { code: 401, message: '令牌过期或者无效' },
     }
   }
 
@@ -114,7 +118,8 @@ module.exports = app => {
       `${apiPrefix}/v1/user/mock`,
       `${apiPrefix}/v1/user/login`,
       `${apiPrefix}/v1/user/logout`,
-      `${apiPrefix}/v1/user/phone`
+      `${apiPrefix}/v1/user/phone`,
+      `${apiPrefix}/v1/user/register`,
     ]
   }
 
@@ -134,11 +139,13 @@ module.exports = app => {
     }
   }
 
+
   /**
    * 自动生成文档配置
    * 文档地址：https://github.com/Yanshijie-EL/egg-swagger-doc/blob/master/config/config.default.js
    */
   config.swaggerdoc = {
+    swagger: "2.0",
     dirScanner: './app/controller',
     basePath: apiPrefix,
     apiInfo: {
@@ -146,9 +153,8 @@ module.exports = app => {
       description: `${userConfig.appName} 接口平台。`,
       version: '1.0.0'
     },
-    schemes: [ 'http', 'https' ]
+    schemes: ['http', 'https']
   }
-
   /**
    * 小程序平台相关配置，可往下新增头条小程序、百度小程序、钉钉小程序等相关配置
    */
@@ -158,8 +164,7 @@ module.exports = app => {
     secret: ''
   }
 
-  return {
-    ...config,
-    ...userConfig
-  }
-}
+  // config.default.js
+  config.jwt = {
+    secret: 'your-secret-key',
+  };
