@@ -14,16 +14,16 @@ module.exports = (options, app) => {
     if (isWhiteUrl || !ctx.url.match(new RegExp(`^${ctx.app.config.apiPrefix}`))) {
       await next()
     } else {
-      //前端放在请求头的token内容
-      const authorization = ctx.request.header.authorization;
+      // 前端放在请求头的token内容
+      const authorization = ctx.request.header.authorization
       if (!authorization) {
         ctx.helper.notLogged()
-        return;
+        return
       }
-      const token = authorization.split(' ')[1];
+      const token = authorization.split(' ')[1]
       try {
-        const decoded = jwt.verify(token, ctx.app.config.jwt.secret);
-        ctx.state.user = decoded;
+        const decoded = jwt.verify(token, ctx.app.config.jwt.secret)
+        ctx.state.user = decoded
         await next()
       } catch (err) {
         ctx.helper.nopermission()
