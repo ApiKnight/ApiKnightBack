@@ -24,6 +24,6 @@ jobs:
             if [ -f package.json ]; then sudo npm run stop; fi
             sudo rm -rf *
             sudo rm -rf .* 2>/dev/null
-            sudo git clone https://github.com/ApiKnight/ApiKnightBack.git .
+            sudo git clone http://github.com/ApiKnight/ApiKnightBack.git .
             sudo npm install
             sudo npm run start
