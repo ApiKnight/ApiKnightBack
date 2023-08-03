@@ -1,8 +1,9 @@
 'use strict'
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 const os = require('os')
 const { v4: uuidv4 } = require('uuid')
 const WechatCrypt = require('./wechatCrypt')
+const moment = require('moment')
 
 /**
  * 新旧接口兼容的版本号标识，有不兼容的代码时更新该版本号，主要为了应对审核以及通过 24h 内没有更新到最新版本的用户
@@ -171,6 +172,13 @@ module.exports = {
   nopermission() {
     const { ctx } = this
     ctx.body = ctx.app.config.resCode.nopermission
+  },
+  // 格式化时间
+  formatTime(Time) {
+    const { ctx } = this
+    // 将 time 格式化为标准格式
+    console.log(ctx.app.config.formatTimet)
+    return moment(Time).format(ctx.app.config.formatTimet)
   }
 
 

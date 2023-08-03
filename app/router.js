@@ -6,5 +6,7 @@
 
 // app/router.js
 module.exports = app => {
-  require('./routers/user.js')(app);
-};
+  require('./routers/user.js')(app)
+  require('./routers/project.js')(app)
+  require('./routers/invite.js')(app)
+}
