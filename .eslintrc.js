@@ -3,6 +3,7 @@
 module.exports = {
   extends: 'eslint-config-egg',
   rules: {
+    indent: 0,
     'comma-dangle': [ 'error', 'never' ],
     semi: [ 'error', 'never' ],
     'no-unused-vars': 'warn',

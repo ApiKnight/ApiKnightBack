@@ -1,5 +1,5 @@
 'use strict'
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 /**
  * 用户是否已登录判断和异常捕获处理
  * @param {*} options 中间件的配置项，框架会将 app.config.middlewareName 传递进来
@@ -14,16 +14,16 @@ module.exports = (options, app) => {
     if (isWhiteUrl || !ctx.url.match(new RegExp(`^${ctx.app.config.apiPrefix}`))) {
       await next()
     } else {
-      //前端放在请求头的token内容
-      const authorization = ctx.request.header.authorization;
+      // 前端放在请求头的token内容
+      const authorization = ctx.request.header.authorization
       if (!authorization) {
         ctx.helper.notLogged()
-        return;
+        return
       }
-      const token = authorization.split(' ')[1];
+      const token = authorization.split(' ')[1]
       try {
-        const decoded = jwt.verify(token, ctx.app.config.jwt.secret);
-        ctx.state.user = decoded;
+        const decoded = jwt.verify(token, ctx.app.config.jwt.secret)
+        ctx.state.user = decoded
         await next()
       } catch (err) {
         ctx.helper.nopermission()

@@ -16,5 +16,17 @@ module.exports = {
   CommonQueryInfo: {
     id: { type: 'number', description: 'id' },
     name: { type: 'string', description: '名称' }
+  },
+  ErrorResponse: {
+    code: { type: 'number', example: 400, description: '状态码' },
+    message: { type: 'string', example: '请求参数错误', description: '错误信息' }
+  },
+  SuccessResponse: {
+    code: { type: 'number', example: 200, description: '状态码' },
+    message: { type: 'string', example: '请求成功', description: '成功信息' }
+  },
+  InternalServerError: {
+    code: { type: 'number', example: 500, description: '状态码' },
+    message: { type: 'string', example: '', description: '未知错误' }
   }
 }
