@@ -1,3 +1,4 @@
+
 'use strict'
 
 /**
@@ -39,6 +40,9 @@ module.exports = app => {
       timestamps: false
     }
   )
+  User.associate = () => {
+    app.model.User.hasMany(app.model.Invite, { foreignKey: 'invitee_id' })
+  }
 
   return User
 }

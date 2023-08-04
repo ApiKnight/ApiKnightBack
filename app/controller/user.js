@@ -15,7 +15,7 @@ class UserController extends Controller {
    */
   async register() {
     const ctx = this.ctx
-    const { helper, request, validate, rule } = this.ctx
+    const { service, helper, request, validate, rule } = this.ctx
     try {
       // 参数校验
       const passed = await validate.call(this, rule.RequestRegister, request.body)
@@ -26,7 +26,7 @@ class UserController extends Controller {
       }
       const { username, email, password, phone, avatar_url } = ctx.request.body
       const hashedPassword = await ctx.hashPassword(password) // 使用 bcrypt 进行密码加密
-      const user = await ctx.service.user.create({ username, email, password: hashedPassword, phone, avatar_url })
+      const user = await service.user.create({ username, email, password: hashedPassword, phone, avatar_url })
       // 不返回密码
       delete user.password
       helper.success(user, '注册成功')
@@ -75,7 +75,7 @@ class UserController extends Controller {
  * @response 601 ErrorResponseUnauthorized 未登录
  */
   async update() {
-    const { helper, request, validate, rule } = this.ctx
+    const { service, helper, request, validate, rule } = this.ctx
     const { ctx } = this
     try {
       // 获取用户ID和请求参数
@@ -89,7 +89,7 @@ class UserController extends Controller {
       }
       const { username, email, phone, password } = request.body
       // 调用服务更新用户信息
-      const result = await ctx.service.user.update(userId, { username, email, phone, password })
+      const result = await service.user.update(userId, { username, email, phone, password })
       // 不返回password
       const { password: _, ...resresult } = result.toJSON()
       // 返回成功响应
@@ -106,8 +106,8 @@ class UserController extends Controller {
     helper.success(result, '获取成功')
   }
   /**
- * @summary 修改个人信息
- * @description 修改个人信息,username,email,phone都是可选的
+ * @summary 检查邮箱or手机号or用户名是否已被注册
+ * @description 检查邮箱or手机号or用户名是否已被注册
  * @router post /v1/user/checkExist
  * @request body RequestcheckExist
  * @response 200 ResponsecheckExist 请求成功
@@ -142,7 +142,6 @@ class UserController extends Controller {
           throw err
         }
       }
-      console.log('333333')
       if (phone) {
         const result = await service.user.isPhoneRegistered(phone)
         if (result) {
@@ -157,6 +156,27 @@ class UserController extends Controller {
     }
   }
 
+  /**
+* @summary 通过邮箱模糊查询用户
+* @description 会返回user列表,包含user的id,email,phone,avatar_url
+* @router post /v1/user/searchUsersByEmail
+* @request body RequestsearchUsersByEmail
+* @response 200 ResponsesearchUsersByEmail 查询成功
+* @response 400 ErrorResponse 参数问题登录失败
+* @response 500 InternalServerError 未知错误,联系管理员
+* @response 601 ErrorResponseUnauthorized 未登录
+*/
+  async searchUsersByEmail() {
+    const { service, helper, request } = this.ctx
+    const { email } = request.body
 
+    try {
+      // 调用 UserService 进行模糊查询
+      const users = await service.user.searchUsersByEmail(email)
+      helper.success(users, '查询成功')
+    } catch (error) {
+      helper.error(error.status, error.message)
+    }
+  }
 }
 module.exports = UserController

@@ -9,6 +9,9 @@ const { getLocalhost } = require('../app/extend/helper')
 module.exports = app => {
   const config = {}
 
+  // 配置服务器的域名
+  config.domainname = 'http://127.0.0.1:7001'
+
   /**
    * cookie 签名 token，建议修改
    */
@@ -41,14 +44,11 @@ module.exports = app => {
       typeCast: true
     }
   }
-
   /**
    * 自定义的应用配置，修改后全局生效
    */
   // 接口前缀名称，跟随业务系统修改
   const apiPrefixName = 'api'
-  // 接口前缀名称，跟随业务系统修改
-  const permissionapiPrefixName = 'api'
   // 接口完整前缀
   const apiPrefix = `/${apiPrefixName}`
   const userConfig = {
@@ -56,6 +56,7 @@ module.exports = app => {
     appName: app.name,
     apiPrefixName,
     apiPrefix,
+    formatTimet: 'YYYY-MM-DD HH:mm:ss',
     // 默认的 code 码和错误提示信息配置，只需要改这一个地方即可
     resCode: {
       // 服务器异常的 code 标识和提示，一般都不需要改
@@ -115,10 +116,7 @@ module.exports = app => {
   config.permission = {
     // 接口白名单配置
     whiteUrls: [
-      `${apiPrefix}/v1/user/mock`,
       `${apiPrefix}/v1/user/login`,
-      `${apiPrefix}/v1/user/logout`,
-      `${apiPrefix}/v1/user/phone`,
       `${apiPrefix}/v1/user/register`
     ]
   }
@@ -138,7 +136,6 @@ module.exports = app => {
       }
     }
   }
-
 
   /**
    * 自动生成文档配置
@@ -167,5 +164,25 @@ module.exports = app => {
   // config.default.js
   config.jwt = {
     secret: 'your-secret-key'
+  }
+
+  // 配置邮箱
+  config.mailer = {
+    // 邮件传输配置
+    transport: {
+      host: 'smtp.qq.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: '210813750@qq.com', // 发件人的 QQ 邮箱
+        pass: 'edzfscpodgxnbiba'// 邮箱授权码，不是登录密码
+      }
+    }
+  }
+
+
+  return {
+    ...config,
+    ...userConfig
   }
 }

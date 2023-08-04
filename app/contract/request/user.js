@@ -21,5 +21,8 @@ module.exports = {
     username: { type: 'string', required: false },
     email: { type: 'string', required: false, pattern: Email },
     phone: { type: 'string', required: false }
+  },
+  RequestsearchUsersByEmail: {
+    email: { type: 'string', required: false }
   }
 }
