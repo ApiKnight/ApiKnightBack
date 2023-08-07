@@ -63,11 +63,10 @@ class InviteService extends Service {
         return invites
     }
     // 添加一条用户申请加入组织记录
-    async update(id, status, projectid) {
+    async update(id, status, userId) {
         const record = await this.ctx.model.Invite.findByPk(id)
-        const recoderesult = record.toJSON()
-        console.log(recoderesult, projectid)
-        if (!record || record.project_id !== Number(projectid)) {
+        const recordresult = record.toJSON()
+        if (!recordresult || recordresult.approved_id !== userId) {
             const error = new Error('修改失败')
             error.status = 500
             throw error

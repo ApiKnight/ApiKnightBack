@@ -36,7 +36,7 @@ module.exports = {
     message: { type: 'string', example: '更新成功', description: '描述信息' }
   },
   ResponseLoginFailed: {
-    code: { type: 'number', example: 401, description: '状态码' },
+    code: { type: 'number', example: 400, description: '状态码' },
     message: { type: 'string', example: '用户名错误/密码错误', description: '错误信息' }
   },
   ResponseRegister: {
@@ -61,9 +61,5 @@ module.exports = {
   ErrorResponseAlreadyRegistered: {
     code: { type: 'number', example: 409, description: '状态码' },
     message: { type: 'string', example: '邮箱已被注册/用户名已经被注册了', description: '错误信息' }
-  },
-  ErrorResponseUnauthorized: {
-    code: { type: 'number', example: 601, description: '状态码' },
-    message: { type: 'string', example: '需要登录才能访问该资源', description: '错误信息' }
   }
 }

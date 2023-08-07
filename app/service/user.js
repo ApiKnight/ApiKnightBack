@@ -56,7 +56,7 @@ class UserService extends Service {
     // 查不到
     if (!user) {
       const error = new Error('账号输入错误')
-      error.status = 401
+      error.status = 400
       throw error
     }
     const userObject = user.toJSON()
@@ -65,7 +65,7 @@ class UserService extends Service {
     const isPasswordValid = await verifyPassword(password, userObject.password)
     if (!isPasswordValid) {
       const error = new Error('密码输入错误')
-      error.status = 401
+      error.status = 400
       throw error
     }
 
@@ -162,6 +162,14 @@ class UserService extends Service {
     })
     const result = user.toJSON()
     return result
+  }
+
+  // 看看用户有没有创建的功能
+  async checkUserCreatedFeature(userid, project_id) {
+    const user = await this.ctx.model.Members.findOne({
+      where: { user_id: userid, project_id }
+    })
+    return user ? (user.role & 10) !== 0 : false
   }
 }
 module.exports = UserService

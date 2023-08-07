@@ -2,13 +2,13 @@
 'use strict'
 
 /**
- * 人员关系表
+ * 文件夹表
  */
 
 const { DataTypes } = require('sequelize')
 
 module.exports = app => {
-    const Members = app.model.define('members',
+    const Folder = app.model.define('folder',
         {
             id: {
                 type: DataTypes.UUID,
@@ -19,20 +19,21 @@ module.exports = app => {
                 type: DataTypes.INTEGER,
                 allowNull: false
             },
-            user_id: {
+            name: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            role: {
-                type: DataTypes.INTEGER,
-                allowNull: false
+            parent_id: {
+                type: DataTypes.UUID
             }
         },
         {
-            tableName: 'members',
+            tableName: 'folder',
             timestamps: false
         }
     )
-
-    return Members
+    Folder.associate = () => {
+        app.model.Folder.hasMany(app.model.Apis, { foreignKey: 'folder_id' })
+    }
+    return Folder
 }
