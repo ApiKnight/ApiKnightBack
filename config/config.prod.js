@@ -17,7 +17,7 @@ module.exports = app => {
     // 连接的数据库，可根据需要改成已有的数据库
     database: 'node_egg',
     // 连接地址
-    host: '127.0.0.1',
+    host: '47.112.108.202',
     // 数据库类型
     dialect: 'mysql'
   }
