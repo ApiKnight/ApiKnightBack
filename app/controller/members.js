@@ -27,8 +27,7 @@ class MembersController extends Controller {
             }
             // 获取请求用户ID
             const userId = this.ctx.state.user.id
-            // 修改状态
-            await service.invite.update(id, status, userId)
+            // 拉取项目成员
             helper.success(null, '更新成功')
         } catch (err) {
             helper.error(err.status, err.message)

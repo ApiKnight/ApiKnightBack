@@ -183,8 +183,6 @@ module.exports = app => {
     }
   }
 
-
-
   return {
     ...config,
     ...userConfig

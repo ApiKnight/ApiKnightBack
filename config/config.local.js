@@ -10,13 +10,13 @@ module.exports = app => {
 
   config.sequelize = {
     // 连接用户
-    username: 'root',
+    username: 'node_egg',
     // 连接密码
-    password: '123456',
+    password: 'JHw2xb4BMfJkD3rZ',
     // 连接的数据库，可根据需要改成已有的数据库
-    database: 'test-egg',
+    database: 'node_egg',
     // 连接地址
-    host: '127.0.0.1',
+    host: '47.112.108.202',
     // 数据库类型
     dialect: 'mysql'
   }
