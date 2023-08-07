@@ -57,6 +57,9 @@ module.exports = app => {
     apiPrefixName,
     apiPrefix,
     formatTimet: 'YYYY-MM-DD HH:mm:ss',
+    addpower: 100,
+    deletepower: 10,
+    writepower: 1,
     // 默认的 code 码和错误提示信息配置，只需要改这一个地方即可
     resCode: {
       // 服务器异常的 code 标识和提示，一般都不需要改
@@ -66,9 +69,9 @@ module.exports = app => {
       // 出错的 code 标识和提示
       error: { code: 400, message: '参数异常' },
       // 未登录的 code 标识和提示
-      notLogged: { code: 601, message: '请先登录后再操作' },
+      notLogged: { code: 401, message: '请先登录后再操作' },
       // 没有权限
-      nopermission: { code: 401, message: '令牌过期或者无效' }
+      nopermission: { code: 401, message: '令牌过期' }
     }
   }
 

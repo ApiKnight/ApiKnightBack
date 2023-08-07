@@ -38,7 +38,7 @@ module.exports = app => {
         tableName: 'project'
     })
     Project.associate = () => {
-        app.model.Invite.hasMany(app.model.Project, { foreignKey: 'id' })
+        app.model.Project.hasMany(app.model.Invite, { foreignKey: 'id' })
     }
     return Project
 }

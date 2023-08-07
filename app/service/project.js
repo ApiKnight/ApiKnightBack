@@ -38,7 +38,7 @@ class ProjectService extends Service {
             const memberresult = member.toJSON()
             if (memberresult.role !== 111) {
                 const err = new Error('无权操作,不是项目所有者')
-                err.status = 401
+                err.status = 403
                 throw err
             }
         }

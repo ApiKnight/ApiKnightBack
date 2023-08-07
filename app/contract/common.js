@@ -28,5 +28,13 @@ module.exports = {
   InternalServerError: {
     code: { type: 'number', example: 500, description: '状态码' },
     message: { type: 'string', example: '', description: '未知错误' }
+  },
+  ForbiddenError: {
+    code: { type: 'number', example: 403, description: '状态码' },
+    message: { type: 'string', example: '', description: '无权操作' }
+  },
+  ErrorResponseUnauthorized: {
+    code: { type: 'number', example: 401, description: '状态码' },
+    message: { type: 'string', example: '未登录', description: '错误信息' }
   }
 }
