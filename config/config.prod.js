@@ -22,11 +22,6 @@ module.exports = app => {
     dialect: 'mysql'
   }
 
-  // 生产环境跨域配置
-  config.cors = {
-    origin: ''
-  }
-
   // 自定义日志路径
   // https://eggjs.org/zh-cn/core/logger.html
   config.logger = {

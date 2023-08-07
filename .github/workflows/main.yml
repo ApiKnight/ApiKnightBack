@@ -1,0 +1,29 @@
+name: ssh-to-serve
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH to server and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.REMOTE_PASS }}
+          script: |
+            if [ ! -d "egg-node" ]; then mkdir egg-node; fi
+            cd egg-node
+            if [ -f package.json ]; then sudo npm run stop; fi
+            sudo rm -rf *
+            sudo rm -rf .* 2>/dev/null
+            sudo git clone http://github.com/ApiKnight/ApiKnightBack.git .
+            sudo npm install
+            sudo npm run start
