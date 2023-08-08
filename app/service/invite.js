@@ -66,7 +66,7 @@ class InviteService extends Service {
     async update(id, status, userId) {
         const record = await this.ctx.model.Invite.findByPk(id)
         const recordresult = record.toJSON()
-        if (!recordresult || recordresult.approved_id !== userId) {
+        if (!recordresult || recordresult.approved_id !== userId || recordresult.status !== 0) {
             const error = new Error('修改失败')
             error.status = 500
             throw error

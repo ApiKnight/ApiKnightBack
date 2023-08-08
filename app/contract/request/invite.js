@@ -11,8 +11,9 @@ module.exports = {
     RequestInviteList: {
         projectid: { type: 'integer', required: true, description: '项目id', message: '项目id' }
     },
-    RequestUpdate: {
+    RequestInviteUpdate: {
         id: { type: 'string', required: true, description: '审批记录id', message: '审批记录id' },
-        status: { type: 'string', required: true, description: '审批状态', message: '审批状态' }
+        status: { type: 'string', required: true, description: '审批状态', message: '审批状态' },
+        projectid: { type: 'integer', required: true, description: '项目id', message: '项目id' }
     }
 }

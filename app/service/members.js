@@ -35,9 +35,54 @@ class MembersService extends Service {
     async isMemberOfProject(project_id, user_id) {
         const resultinfo = await this.ctx.model.Members.findOne({ where: { user_id, project_id } })
         if (!resultinfo) {
+            const error = new Error('无权')
+            error.status = 403
+            throw error
+        }
+    }
+    // 拉取一个项目里的成员信息
+    async selectMembersListByProjectid(project_id) {
+        const members_list = await this.ctx.model.Members.findAll({
+            where: {
+                project_id
+            }
+        })
+        return members_list
+
+    }
+    // 把用户添加进项目
+    async createMembers(project_id, user_id, role) {
+        // 创建项目
+        const newMembers = await this.ctx.model.Members.create({
+            project_id,
+            user_id,
+            role
+        })
+    }
+    // 通过id查询成员信息记录
+    async getMembersById(id) {
+        const resultinfo = await this.ctx.model.Members.findOne({ where: { id } })
+        if (!resultinfo) {
             const error = new Error('未知错误')
             error.status = 500
             throw error
+        }
+        return resultinfo.toJSON()
+    }
+    // 更改用户角色
+    async updateMembersRole(id, role) {
+        try {
+            await this.ctx.model.Members.update({
+                role
+            }, {
+                where: {
+                    id
+                }
+            })
+        } catch (error) {
+            const err = new Error('未知错误')
+            err.status = 500
+            throw err
         }
     }
 }
