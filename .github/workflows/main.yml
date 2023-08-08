@@ -12,10 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: SSH to server and stop
+      - name: SSH to server and deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
@@ -25,23 +22,8 @@ jobs:
             if [ ! -d "egg-node" ]; then mkdir egg-node; fi
             cd egg-node
             if [ -f package.json ]; then sudo npm run stop; fi
-
-      - name: Copy Project to Server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          password: ${{ secrets.REMOTE_PASS }}
-          source: ./*
-          target: /egg-node
-        
-      - name: SSH to server and deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          password: ${{ secrets.REMOTE_PASS }}
-          script: |
-            cd egg-node
+            sudo rm -rf *
+            sudo rm -rf .* 2>/dev/null
+            sudo git clone http://github.com/ApiKnight/ApiKnightBack.git .
             sudo npm install
             sudo npm run start
