@@ -170,7 +170,7 @@ class InviteController extends Controller {
  * @summary 项目管理员修改审批状态
  * @description 传入projectid,审批记录id,修改状态status 0待审批,1通过,-1拒绝
  * @router post /v1/invite/updatestatus
- * @request body RequestUpdate
+ * @request body RequestInviteUpdate
  * @response 200 ResponseStatusUpdate 请求成功
  * @response 400 ErrorResponse 参数问题
  * @response 401 ErrorResponseUnauthorized 未登录
@@ -178,7 +178,7 @@ class InviteController extends Controller {
  */
     async inviteUpdate() {
         const { service, helper, rule, request, validate } = this.ctx
-        const { status, id } = request.body
+        const { status, id, projectid } = request.body
         try {
             // 参数校验
             const passed = await validate.call(this, rule.RequestUpdate, request.body)
@@ -189,8 +189,14 @@ class InviteController extends Controller {
             }
             // 获取请求用户ID
             const userId = this.ctx.state.user.id
+            // 判断用户是不是项目所有者
+            await service.project.isOwner(projectid, userId)
             // 修改状态
             await service.invite.update(id, status, userId)
+            // 看看是不是通过
+            if (status === 1) {
+                await service.members.createMembers(projectid, userId, 100)
+            }
             helper.success(null, '更新成功')
         } catch (err) {
             helper.error(err.status, err.message)

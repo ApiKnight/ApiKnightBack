@@ -120,7 +120,8 @@ module.exports = app => {
     // 接口白名单配置
     whiteUrls: [
       `${apiPrefix}/v1/user/login`,
-      `${apiPrefix}/v1/user/register`
+      `${apiPrefix}/v1/user/register`,
+      `${apiPrefix}/v1/user/checkExist`
     ]
   }
 

@@ -87,9 +87,9 @@ class UserController extends Controller {
         err.status = 400
         throw err
       }
-      const { username, email, phone, password } = request.body
+      const { username, email, phone, password, avatar_url } = request.body
       // 调用服务更新用户信息
-      const result = await service.user.update(userId, { username, email, phone, password })
+      const result = await service.user.update(userId, { username, email, phone, password, avatar_url })
       // 不返回password
       const { password: _, ...resresult } = result.toJSON()
       // 返回成功响应
