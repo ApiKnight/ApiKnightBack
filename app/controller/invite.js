@@ -12,8 +12,8 @@ class InviteController extends Controller {
        * @request body RequestInviteSending
        * @response 200 ResponseInviteSending 请求成功
        * @response 400 ErrorResponse 参数问题
-       * @response 401 RespnseDeleteError 无权删除
-       * @response 601 ErrorResponseUnauthorized 未登录
+       * @response 403 ForbiddenError 无权
+       * @response 401 ErrorResponseUnauthorized 未登录
        * @response 500 InternalServerError 未知错误
        */
     async inviteSending() {
@@ -84,7 +84,8 @@ class InviteController extends Controller {
      * @request body RequestInviteReceive
      * @response 200 ResponseInviteReceive 请求成功
      * @response 400 ErrorResponse 参数问题
-     * @response 601 ErrorResponseUnauthorized 未登录
+      * @response 403 ForbiddenError 无权
+     * @response 401 ErrorResponseUnauthorized 未登录
      * @response 500 InternalServerError 未知错误
      */
     async inviteReceive() {
@@ -117,7 +118,8 @@ class InviteController extends Controller {
     * @request body RequestInviteList
     * @response 200 ResponseInviteList1 请求成功
     * @response 400 ErrorResponse 参数问题
-    * @response 601 ErrorResponseUnauthorized 未登录
+    * @response 403 ForbiddenError 无权
+    * @response 401 ErrorResponseUnauthorized 未登录
     * @response 500 InternalServerError 未知错误
     */
     async inviteList1() {
@@ -148,7 +150,8 @@ class InviteController extends Controller {
    * @router get /v1/invite/alist
    * @response 200 ResponseInviteList2 请求成功
    * @response 400 ErrorResponse 参数问题
-   * @response 601 ErrorResponseUnauthorized 未登录
+   * @response 403 ForbiddenError 无权
+   * @response 401 ErrorResponseUnauthorized 未登录
    * @response 500 InternalServerError 未知错误
    */
     async inviteList2() {
@@ -167,15 +170,15 @@ class InviteController extends Controller {
  * @summary 项目管理员修改审批状态
  * @description 传入projectid,审批记录id,修改状态status 0待审批,1通过,-1拒绝
  * @router post /v1/invite/updatestatus
- * @request body RequestUpdate
+ * @request body RequestInviteUpdate
  * @response 200 ResponseStatusUpdate 请求成功
  * @response 400 ErrorResponse 参数问题
- * @response 601 ErrorResponseUnauthorized 未登录
+ * @response 401 ErrorResponseUnauthorized 未登录
  * @response 500 InternalServerError 修改失败
  */
     async inviteUpdate() {
         const { service, helper, rule, request, validate } = this.ctx
-        const { projectid, status, id } = request.body
+        const { status, id, projectid } = request.body
         try {
             // 参数校验
             const passed = await validate.call(this, rule.RequestUpdate, request.body)
@@ -189,7 +192,11 @@ class InviteController extends Controller {
             // 判断用户是不是项目所有者
             await service.project.isOwner(projectid, userId)
             // 修改状态
-            await service.invite.update(id, status, projectid)
+            await service.invite.update(id, status, userId)
+            // 看看是不是通过
+            if (status === 1) {
+                await service.members.createMembers(projectid, userId, 100)
+            }
             helper.success(null, '更新成功')
         } catch (err) {
             helper.error(err.status, err.message)

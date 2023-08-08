@@ -12,11 +12,11 @@ class ProjectService extends Service {
         const project = newProject.toJSON()
         // 格式化日期
         project.create_time = this.ctx.helper.formatTime(project.create_time)
-        // 添加创建者到项目members赋予角色111
+        // 添加创建者到项目members赋予角色创建者1111
         await this.ctx.model.Members.create({
             project_id: project.id,
             user_id: create_user,
-            role: 111
+            role: 1111
         })
         return project
     }
@@ -36,9 +36,9 @@ class ProjectService extends Service {
             throw err
         } else {
             const memberresult = member.toJSON()
-            if (memberresult.role !== 111) {
+            if (memberresult.role !== 1111) {
                 const err = new Error('无权操作,不是项目所有者')
-                err.status = 401
+                err.status = 403
                 throw err
             }
         }

@@ -56,7 +56,7 @@ class UserService extends Service {
     // 查不到
     if (!user) {
       const error = new Error('账号输入错误')
-      error.status = 401
+      error.status = 400
       throw error
     }
     const userObject = user.toJSON()
@@ -66,7 +66,7 @@ class UserService extends Service {
     const isPasswordValid = await verifyPassword(password, userObject.password)
     if (!isPasswordValid) {
       const error = new Error('密码输入错误')
-      error.status = 401
+      error.status = 400
       throw error
     }
 
@@ -141,6 +141,36 @@ class UserService extends Service {
     const { ctx } = this
     const user = await ctx.model.User.findOne({ where: { phone } })
     return !!user
+  }
+
+  async searchUsersByEmail(email) {
+    // 在 User 模型中进行模糊查询
+    const users = await this.ctx.model.User.findAll({
+      where: {
+        email: {
+          [this.ctx.app.Sequelize.Op.like]: `%${email}%`
+        }
+      }, attributes: ['id', 'username', 'email', 'avatar_url']
+    })
+    return users
+  }
+
+  // 通过id查找user
+  async getUserById(userid) {
+    const user = await this.ctx.model.User.findOne({
+      where: { id: userid },
+      attributes: ['id', 'username', 'email', 'avatar_url', 'phone'] // 根据需要选择要返回的用户属性
+    })
+    const result = user.toJSON()
+    return result
+  }
+
+  // 看看用户有没有创建的功能
+  async checkUserCreatedFeature(userid, project_id) {
+    const user = await this.ctx.model.Members.findOne({
+      where: { user_id: userid, project_id }
+    })
+    return user ? (user.role & 10) !== 0 : false
   }
 }
 module.exports = UserService

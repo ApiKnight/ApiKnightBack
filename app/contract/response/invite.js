@@ -14,7 +14,7 @@ module.exports = {
         data: {
             type: 'object',
             properties: {
-                id: { type: 'int', description: '项目id', example: '30606ac4-7489-4088-932a-a7b1ae008330' },
+                id: { type: 'integer', description: '项目id', example: '30606ac4-7489-4088-932a-a7b1ae008330' },
                 create_time: { type: 'string', description: '创建时间', example: '2023-07-31 16:39:20' },
                 approve_time: { type: 'string', description: '审批时间', example: '2023-08-01 17:02:04' },
                 project_id: { type: 'number', description: '项目id', example: '1000' },
@@ -30,7 +30,7 @@ module.exports = {
         data: {
             type: 'object',
             properties: {
-                id: { type: 'int', description: '项目id', example: '30606ac4-7489-4088-932a-a7b1ae008330' },
+                id: { type: 'integer', description: '项目id', example: '30606ac4-7489-4088-932a-a7b1ae008330' },
                 create_time: { type: 'string', description: '创建时间', example: '2023-07-31 16:39:20' },
                 approve_time: { type: 'string', description: '审批时间', example: '2023-08-01 17:02:04' },
                 project_id: { type: 'number', description: '项目id', example: '1000' },

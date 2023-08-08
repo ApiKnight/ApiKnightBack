@@ -12,7 +12,7 @@ class ProjectController extends Controller {
     * @request body RequestCreateProject
     * @response 200 ResponseCreateProject 请求成功
     * @response 400 ErrorResponse 参数问题登录失败
-    * @response 601 ErrorResponseUnauthorized 未登录
+    * @response 401 ErrorResponseUnauthorized 未登录
     */
     async CreatProject() {
         const { service, helper, request, validate, rule, state } = this.ctx
@@ -29,6 +29,8 @@ class ProjectController extends Controller {
             const userId = state.user.id
             // 创建项目
             const createresult = await service.project.create({ projectname, description, create_user: userId })
+            // 默认创建一个根目录
+            await service.folder.create(null, '根目录', createresult.id)
             delete createresult.create_user
             helper.success(createresult, '创建成功')
         } catch (error) {
@@ -42,8 +44,8 @@ class ProjectController extends Controller {
    * @request body RequestDeleteProject
    * @response 200 ResponseDeleteProject 请求成功
    * @response 400 ErrorResponse 参数问题
-   * @response 401 RespnseDeleteError 无权删除
-   * @response 601 ErrorResponseUnauthorized 未登录
+   * @response 403 ForbiddenError 无权删除
+   * @response 401 ErrorResponseUnauthorized 未登录
    * @response 500 InternalServerError 未知错误
    */
     async DeleteProject() {
@@ -74,8 +76,8 @@ class ProjectController extends Controller {
     * @request body RequestUpdateProject
     * @response 200 ResponseUpdateProject 请求成功
     * @response 400 ErrorResponse 参数问题登录失败
-    * @response 401 RespnseDeleteError 无权删除
-    * @response 601 ErrorResponseUnauthorized 未登录
+    * @response 403 ForbiddenError 无权更新
+    * @response 401 ErrorResponseUnauthorized 未登录
     * @response 500 InternalServerError 未知错误
     */
     async UpdateProject() {
@@ -98,6 +100,76 @@ class ProjectController extends Controller {
             // 拉取项目最新内容
             const updateproject = await service.project.getByProjectId(projectid)
             helper.success(updateproject, '更新成功')
+        } catch (error) {
+            helper.error(error.status, error.message)
+        }
+    }
+    /**
+   * @summary 获取项目列表
+   * @description 拉取用户参与的那些项目
+   * @router get /v1/project/list
+   * @response 200 ResponseGetProjectList 请求成功
+   * @response 400 ErrorResponse 参数问题登录失败
+   * @response 403 ForbiddenError 无权获取
+   * @response 401 ErrorResponseUnauthorized 未登录
+   * @response 500 InternalServerError 未知错误
+   */
+    async getProjectList() {
+        const { service, helper, state } = this.ctx
+        try {
+            // 获取用户ID
+            const userId = state.user.id
+            // 获取他拥有的项目id列表
+            const project_id_list = await service.members.getProjectListByuserId(userId)
+            // 通过项目id列表查询项目信息列表
+            const project_list = await Promise.all(
+                project_id_list.map(async element => {
+                    const middle = await service.project.getByProjectId(element.toJSON().project_id)
+                    middle.role = element.toJSON().role === 1111 ? '所有者' : '成员'
+                    return middle
+                })
+            )
+            helper.success(project_list, '获取成功')
+        } catch (error) {
+            helper.error(error.status, error.message)
+        }
+
+    }
+    /**
+  * @summary 获取项目信息通过project_id
+  * @description 拉取项目信息,创建人信息,项目里面的文件夹和api信息
+  * @router post /v1/project/query
+  * @request post RequestQueryProject
+  * @response 200 ResponseQueryProject 请求成功
+  * @response 400 ErrorResponse 参数问题登录失败
+  * @response 403 ForbiddenError 无权获取
+  * @response 401 ErrorResponseUnauthorized 未登录
+  * @response 500 InternalServerError 未知错误
+  */
+    async getProjectByProject() {
+        const { service, helper, state, validate, rule, request } = this.ctx
+        const { projectid } = request.body
+        try {
+            const passed = await validate.call(this, rule.RequestQueryProject, request.body)
+            if (!passed) {
+                const err = new Error('参数验证错误')
+                err.status = 400
+                throw err
+            }
+            // 获取用户ID
+            const userId = state.user.id
+            // 通过project_id 和 userId 查询角色
+            const role = await service.members.selectRole(projectid, userId)
+            // 通过项目id列表查询项目信息
+            const project_result = await service.project.getByProjectId(projectid)
+            // 通过项目id查询项目里的api列表
+            const api_list = await service.apis.getApiByProjectId(projectid)
+            // 通过项目id查询项目里的文件夹列表
+            const folder_list = await service.folder.getFolderByProjectId(projectid)
+            project_result.role = role
+            project_result.api_list = api_list
+            project_result.folder_list = folder_list
+            helper.success(project_result, '获取成功')
         } catch (error) {
             helper.error(error.status, error.message)
         }

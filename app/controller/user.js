@@ -42,7 +42,7 @@ class UserController extends Controller {
  * @request body RequestLogin
  * @response 200 ResponseLogin 登录成功
  * @response 400 ErrorResponse 参数问题登录失败
- * @response 401 ResponseLoginFailed 登录失败,用户名或密码错误
+ * @response 400 ResponseLoginFailed 登录失败,用户名或密码错误
  */
   async login() {
     const { service, helper, request, validate, rule } = this.ctx
@@ -72,7 +72,7 @@ class UserController extends Controller {
  * @response 200 ResponseUpdate 登录成功
  * @response 400 ErrorResponse 参数问题登录失败
  * @response 409 ErrorResponseAlreadyRegistered 提供的username,email,phone已被注册
- * @response 601 ErrorResponseUnauthorized 未登录
+ * @response 401 ErrorResponseUnauthorized 未登录
  */
   async update() {
     const { service, helper, request, validate, rule } = this.ctx
@@ -87,9 +87,9 @@ class UserController extends Controller {
         err.status = 400
         throw err
       }
-      const { username, email, phone, password } = request.body
+      const { username, email, phone, password, avatar_url } = request.body
       // 调用服务更新用户信息
-      const result = await service.user.update(userId, { username, email, phone, password })
+      const result = await service.user.update(userId, { username, email, phone, password, avatar_url })
       // 不返回password
       const { password: _, ...resresult } = result.toJSON()
       // 返回成功响应
@@ -113,7 +113,7 @@ class UserController extends Controller {
  * @response 200 ResponsecheckExist 请求成功
  * @response 400 ErrorResponse 参数问题登录失败
  * @response 409 ErrorResponseAlreadyRegistered 提供的username,email,phone已被注册
- * @response 601 ErrorResponseUnauthorized 未登录
+ * @response 401 ErrorResponseUnauthorized 未登录
  */
   async checkExist() {
     const { service, helper, request, validate, rule } = this.ctx
@@ -135,7 +135,6 @@ class UserController extends Controller {
       }
       if (username) {
         const result = await service.user.isUsernameRegistered(username)
-        console.log('用户名在这', result)
         if (result) {
           const err = new Error('用户名已注册')
           err.status = 409
@@ -164,7 +163,7 @@ class UserController extends Controller {
 * @response 200 ResponsesearchUsersByEmail 查询成功
 * @response 400 ErrorResponse 参数问题登录失败
 * @response 500 InternalServerError 未知错误,联系管理员
-* @response 601 ErrorResponseUnauthorized 未登录
+* @response 401 ErrorResponseUnauthorized 未登录
 */
   async searchUsersByEmail() {
     const { service, helper, request } = this.ctx
