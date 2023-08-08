@@ -14,7 +14,7 @@ module.exports = app => {
     // 连接密码
     password: '123456',
     // 连接的数据库，可根据需要改成已有的数据库
-    database: 'template_node_egg',
+    database: 'node_egg',
     // 连接地址
     host: '127.0.0.1',
     // 数据库类型
