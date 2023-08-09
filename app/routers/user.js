@@ -17,4 +17,6 @@ module.exports = app => {
     subRouter.post('/v1/user/checkExist', controller.user.checkExist)
     // 通过邮箱模糊匹配用户
     subRouter.post('/v1/user/searchUsersByEmail', controller.user.searchUsersByEmail)
+    // 通过userId查询用户
+    subRouter.post('/v1/user/query', controller.user.queryUserInfo)
 }
