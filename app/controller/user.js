@@ -177,5 +177,33 @@ class UserController extends Controller {
       helper.error(error.status, error.message)
     }
   }
+
+  /**
+* @summary 通过id查询用户
+* @description 会返回user信息
+* @router post /v1/user/query
+* @request body RequestUserInfo
+* @response 200 ResponsesearchUsersByEmail 查询成功
+* @response 400 ErrorResponse 参数问题登录失败
+* @response 500 InternalServerError 未知错误,联系管理员
+* @response 401 ErrorResponseUnauthorized 未登录
+*/
+  async queryUserInfo() {
+    const { service, helper, request, validate, rule } = this.ctx
+    const { user_id } = request.body
+    try {
+      const passed = await validate.call(this, rule.RequestUserInfo, request.body)
+      if (!passed) {
+        const err = new Error('参数验证错误')
+        err.status = 400
+        throw err
+      }
+      // 调用查询
+      const users = await service.user.getUserById(user_id)
+      helper.success(users, '查询成功')
+    } catch (error) {
+      helper.error(error.status, error.message)
+    }
+  }
 }
 module.exports = UserController
