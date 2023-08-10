@@ -69,7 +69,8 @@ module.exports = {
                         phone: { type: 'string', description: '手机号码' },
                         avatar_url: { type: 'string', description: '头像地址' }
                     }
-                }
+                },
+                role: { type: 'string', description: '身份信息', example: '项目所有者' }
             }
         },
         message: { type: 'string', example: '更新成功', description: '描述信息' }

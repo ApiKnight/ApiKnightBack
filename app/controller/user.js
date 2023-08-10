@@ -198,9 +198,61 @@ class UserController extends Controller {
         err.status = 400
         throw err
       }
+      // 获取他拥有的项目id列表
+      const project_id_list = await service.members.getProjectListByuserId(user_id)
+      // 通过项目id列表查询项目信息列表
+      const project_list = await Promise.all(
+        project_id_list.map(async element => {
+          const middle = await service.project.getByProjectId(element.toJSON().project_id)
+          middle.role = element.toJSON().role === 1111 ? '所有者' : '成员'
+          return middle
+        })
+      )
       // 调用查询
       const users = await service.user.getUserById(user_id)
+      users.project_list = project_list
       helper.success(users, '查询成功')
+    } catch (error) {
+      helper.error(error.status, error.message)
+    }
+  }
+  /**
+* @summary 查询自己的用户信息
+* @description 会返回user信息
+* @router post /v1/user/queryself
+* @response 200 ResponsesearchUsersByEmail 查询成功
+* @response 400 ErrorResponse 参数问题登录失败
+* @response 500 InternalServerError 未知错误,联系管理员
+* @response 401 ErrorResponseUnauthorized 未登录
+*/
+  async queryUserSelfInfo() {
+    const { service, helper, state } = this.ctx
+    try {
+      // 获取用户ID和请求参数
+      const userId = state.user.id
+      // 调用查询
+      const users = await service.user.getUserById(userId)
+      helper.success(users, '查询成功')
+    } catch (error) {
+      helper.error(error.status, error.message)
+    }
+  }
+  /**
+* @summary 个人主页信息
+* @description 传入目标user_id
+* @router post /v1/user/Space
+* @response 200 ResponsesearchUsersByEmail 查询成功
+* @response 400 ErrorResponse 参数问题登录失败
+* @response 500 InternalServerError 未知错误,联系管理员
+* @response 401 ErrorResponseUnauthorized 未登录
+*/
+  async queryUserSpaceInfo() {
+    const { service, helper, state, request } = this.ctx
+    const { user_id } = request.body
+    try {
+      // 调用查询
+      const user = await service.user.getUserById(user_id)
+      helper.success(user, '查询成功')
     } catch (error) {
       helper.error(error.status, error.message)
     }
