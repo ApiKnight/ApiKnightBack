@@ -22,5 +22,8 @@ module.exports = {
     },
     RequestApisQuery: {
         apis_id: { type: 'string', required: true, description: '所属文件夹id', message: '所属文件夹id' }
+    },
+    RequestApisBack: {
+        version_id: { type: 'string', required: true, description: '历史版本id', message: '历史版本id' }
     }
 }

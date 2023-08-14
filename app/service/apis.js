@@ -17,7 +17,6 @@ class ApisService extends Service {
                 operate_user: userId
             })
             const apiresult = newApis.toJSON()
-            // 增加一个初始化历史版本记录
             // 新增历史纪录
             await this.ctx.service.version.create({
                 apis_id: apiresult.id, userId, request_data, response_data, description, name, notes: '首次创建'
@@ -66,15 +65,27 @@ class ApisService extends Service {
         // 更新记录
         const currentDate = new Date()
         try {
-            await api.update({
-                folder_id,
-                response_data,
-                request_data,
-                description,
-                name,
-                operate_time: currentDate,
-                operate_user: userId
-            })
+            if (folder_id) {
+                await api.update({
+                    folder_id,
+                    response_data,
+                    request_data,
+                    description,
+                    name,
+                    operate_time: currentDate,
+                    operate_user: userId
+                })
+            } else {
+                await api.update({
+                    response_data,
+                    request_data,
+                    description,
+                    name,
+                    operate_time: currentDate,
+                    operate_user: userId
+                })
+            }
+
         } catch (error) {
             const err = new Error('未知错误')
             err.status = 500
