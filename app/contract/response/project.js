@@ -79,6 +79,17 @@ module.exports = {
         code: { type: 'number', example: 200, description: '状态码' },
         data: { type: 'string', example: '过于复杂请求试试看', description: '过于复杂请求试试看' },
         message: { type: 'string', example: '更新成功', description: '描述信息' }
+    },
+    ResponseQueryProjectSummary: {
+        code: { type: 'number', example: 200, description: '状态码' },
+        data: {
+            type: 'object',
+            properties: {
+                projectname: { type: 'string', description: '项目名称' },
+                description: { type: 'string', description: '项目描述' }
+            }
+        },
+        message: { type: 'string', example: '查询成功', description: '描述信息' }
     }
 
 
