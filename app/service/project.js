@@ -95,5 +95,22 @@ class ProjectService extends Service {
         project.create_user = await this.ctx.service.user.getUserById(project.create_user)
         return project
     }
+    // 通过projectid查询项目简略
+    async getProjectSummaryByProjectId(projectid) {
+        let project = await this.ctx.model.Project.findOne({
+            where: {
+                id: projectid
+            },
+            attributes: ['projectname', 'description']
+        })
+        project = project.toJSON()
+        if (!project) {
+            const err = new Error('参数错误')
+            err.status = 400
+            throw err
+        }
+        return project
+    }
+
 }
 module.exports = ProjectService

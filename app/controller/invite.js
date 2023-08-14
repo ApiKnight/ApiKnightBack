@@ -41,7 +41,8 @@ class InviteController extends Controller {
             // 判断用户是不是项目所有者
             await service.project.isOwner(projectid, createuser.id)
             // 邀请链接
-            const invite_url = app.config.domainname + '/v1/confirmation/' + projectid
+            // const invite_url = app.config.domainname + '/v1/confirmation/' + projectid
+            const invite_url = `http://127.0.0.1:5173/receive?projectid=${projectid}`
             // 配置链接
             const transporter = nodemailer.createTransport(app.config.mailer.transport)
             // to应该是被邀请者的email

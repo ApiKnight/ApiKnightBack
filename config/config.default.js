@@ -121,7 +121,8 @@ module.exports = app => {
     whiteUrls: [
       `${apiPrefix}/v1/user/login`,
       `${apiPrefix}/v1/user/register`,
-      `${apiPrefix}/v1/user/checkExist`
+      `${apiPrefix}/v1/user/checkExist`,
+      `${apiPrefix}/v1/project/querysummary`
     ]
   }
 

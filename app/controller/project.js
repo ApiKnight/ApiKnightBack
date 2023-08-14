@@ -174,6 +174,32 @@ class ProjectController extends Controller {
             helper.error(error.status, error.message)
         }
     }
+    /**
+   * @summary 获取项目概要通过project_id
+   * @description 拉取项目信息,创建人信息,项目里面的文件夹和api信息
+   * @router post /v1/project/querysummary
+   * @request post RequestQueryProject
+   * @response 200 ResponseQueryProjectSummary 请求成功
+   * @response 400 ErrorResponse 参数问题登录失败
+   * @response 500 InternalServerError 未知错误
+   */
+    async getProjectSummaryByProjectId() {
+        const { service, helper, state, validate, rule, request } = this.ctx
+        const { projectid } = request.body
+        try {
+            const passed = await validate.call(this, rule.RequestQueryProject, request.body)
+            if (!passed) {
+                const err = new Error('参数验证错误')
+                err.status = 400
+                throw err
+            }
+            // 通过项目id列表查询项目信息
+            const project_result = await service.project.getProjectSummaryByProjectId(projectid)
+            helper.success(project_result, '获取成功')
+        } catch (error) {
+            helper.error(error.status, error.message)
+        }
+    }
 }
 
 module.exports = ProjectController
