@@ -12,4 +12,8 @@ module.exports = app => {
     subRouter.post('/v1/apis/update', controller.apis.update)
     // 查询api
     subRouter.post('/v1/apis/query', controller.apis.query)
+    // 查询api的versionlist
+    subRouter.post('/v1/apis/queryversion', controller.apis.apisVersionList)
+    // 回退
+    subRouter.post('/v1/apis/back', controller.apis.back)
 }

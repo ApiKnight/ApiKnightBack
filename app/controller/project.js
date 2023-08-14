@@ -175,8 +175,8 @@ class ProjectController extends Controller {
         }
     }
     /**
-   * @summary 获取项目概要通过project_id
-   * @description 拉取项目信息,创建人信息,项目里面的文件夹和api信息
+   * @summary 通过project_id获取项目概述
+   * @description 通过project_id获取项目概述
    * @router post /v1/project/querysummary
    * @request post RequestQueryProject
    * @response 200 ResponseQueryProjectSummary 请求成功
@@ -184,7 +184,7 @@ class ProjectController extends Controller {
    * @response 500 InternalServerError 未知错误
    */
     async getProjectSummaryByProjectId() {
-        const { service, helper, state, validate, rule, request } = this.ctx
+        const { service, helper, validate, rule, request } = this.ctx
         const { projectid } = request.body
         try {
             const passed = await validate.call(this, rule.RequestQueryProject, request.body)

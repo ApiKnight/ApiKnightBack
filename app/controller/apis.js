@@ -34,8 +34,6 @@ class ApisController extends Controller {
             if (isresult) {
                 // 尝试创建
                 await service.apis.create(userId, name, folder_id, request_data, response_data, project_id, description)
-                // 创建历史记录
-                // 代做
                 helper.success(null, '创建成功')
             } else {
                 const err = new Error('无权操作')
@@ -79,7 +77,7 @@ class ApisController extends Controller {
                 // 尝试删除
                 await service.apis.delete(apis_id)
                 // 删除对应的历史记录
-                // 待处理
+                await service.version.deleteVersionByApisId(apis_id)
                 helper.success(null, '删除成功')
             } else {
                 const err = new Error('无权操作', apiresult)
@@ -130,7 +128,7 @@ class ApisController extends Controller {
                 await service.version.create({ apis_id, userId, request_data, response_data, description, name, notes })
                 helper.success(null, '更改成功')
             } else {
-                const err = new Error('无权操作', apiresult)
+                const err = new Error('无权操作')
                 err.status = 403
                 throw err
             }
@@ -168,6 +166,85 @@ class ApisController extends Controller {
             // 通过这个apis所属的projectid查询他是不是成员
             await service.members.isMemberOfProject(apiresult.project_id, userId)
             helper.success(apiresult, '更改成功')
+        } catch (err) {
+            helper.error(err.status, err.message)
+        }
+    }
+    /**
+* @summary 查询api历史版本内容
+* @description 通过历史版本id回退api内容
+* @router post /v1/apis/queryversion
+* @request body RequestApisQuery
+* @response 200 ResponseQueryVersionList 请求成功
+* @response 400 ErrorResponse 参数问题
+* @response 403 ForbiddenError 无权
+* @response 401 ErrorResponseUnauthorized 未登录
+* @response 500 InternalServerError 未知错误
+*/
+    async apisVersionList() {
+        const { service, helper, request, validate, rule } = this.ctx
+        const { apis_id } = request.body
+        try {
+            // 参数校验
+            const passed = await validate.call(this, rule.RequestApisQuery, request.body)
+            if (!passed) {
+                const err = new Error('参数验证错误')
+                err.status = 400
+                throw err
+            }
+            // 获取请求用户ID
+            const userId = this.ctx.state.user.id
+            // 查询这个apis的信息
+            const apiresult = await service.apis.getApiById(apis_id)
+            // 通过这个apis所属的projectid查询他是不是成员
+            await service.members.isMemberOfProject(apiresult.project_id, userId)
+            // 查询这个apis的历史版本记录
+            const versionList = await service.version.selectVersionListByApisId(apis_id)
+            helper.success(versionList, '查询成功')
+        } catch (err) {
+            helper.error(err.status, err.message)
+        }
+    }
+    /**
+* @summary 提供versionid回退版本内容
+* @description 通过历史版本id回退api内容
+* @router post /v1/apis/back
+* @request body RequestApisBack
+* @response 200 ResponseApisBack 请求成功
+* @response 400 ErrorResponse 参数问题
+* @response 403 ForbiddenError 无权
+* @response 401 ErrorResponseUnauthorized 未登录
+* @response 500 InternalServerError 未知错误
+*/
+    async back() {
+        const { service, helper, request, validate, rule, app } = this.ctx
+        const { version_id } = request.body
+        try {
+            // 参数校验
+            const passed = await validate.call(this, rule.RequestApisBack, request.body)
+            if (!passed) {
+                const err = new Error('参数验证错误')
+                err.status = 400
+                throw err
+            }
+            // 获取请求用户ID
+            const userId = this.ctx.state.user.id
+            // 查询这个version记录
+            const version = await service.version.selectVersionById(version_id)
+            // 查询这个apis的信息
+            const apiresult = await service.apis.getApiById(version.apis_id)
+            // 验证更改权限
+            const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.writepower)
+            if (isresult) {
+                await service.apis.update(userId, version.apis_id, null, version.response_data, version.request_data, version.description, version.name)
+                // 新增对应的历史记录
+                await service.version.create({ apis_id: version.apis_id, userId, request_data: version.request_data, response_data: version.response_data, description: version.description, name: version.name, notes: `回退到${version.operate_time}` })
+                helper.success(null, '回退成功')
+            } else {
+                const err = new Error('无权操作', apiresult)
+                err.status = 403
+                throw err
+            }
         } catch (err) {
             helper.error(err.status, err.message)
         }
