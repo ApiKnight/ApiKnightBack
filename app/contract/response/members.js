@@ -5,9 +5,9 @@ module.exports = {
         data: {
             type: 'object',
             properties: {
-                id: { type: 'string', description: '成员信息id', example: '30606ac4-7489-4088-932a-a7b1ae008330' },
-                project_id: { type: 'number', description: '项目id', example: '1000' },
-                user_id: { type: 'string', description: '成员id', example: '1000' },
+                avatar_url: { type: 'string', description: '头像地址' },
+                name: { type: 'string', description: '成员姓名' },
+                user_id: { type: 'string', description: '成员id' },
                 role: { type: 'string', description: '权限', example: '1111' }
             }
         },
