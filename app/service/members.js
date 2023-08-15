@@ -1,6 +1,6 @@
 'use strict'
 const Service = require('egg').Service
-
+const { literal } = require('sequelize')
 class MembersService extends Service {
     // 验证创建权限
     async validate_permissions(userId, project_id, validate_power) {
@@ -45,7 +45,18 @@ class MembersService extends Service {
         const members_list = await this.ctx.model.Members.findAll({
             where: {
                 project_id
-            }
+            },
+            attributes: [
+                'role',
+                'user_id',
+                [literal('user.username'), 'name'], // 重命名字段为 'username'
+                [literal('user.avatar_url'), 'avatar_url']
+            ],
+            include: {
+                model: this.ctx.model.User,
+                attributes: []
+            },
+            raw: true
         })
         return members_list
 
@@ -53,7 +64,7 @@ class MembersService extends Service {
     // 把用户添加进项目
     async createMembers(project_id, user_id, role) {
         // 创建项目
-        const newMembers = await this.ctx.model.Members.create({
+        await this.ctx.model.Members.create({
             project_id,
             user_id,
             role

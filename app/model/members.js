@@ -33,6 +33,8 @@ module.exports = app => {
             timestamps: false
         }
     )
-
+    Members.associate = () => {
+        Members.belongsTo(app.model.User, { foreignKey: 'user_id', targetKey: 'id' })
+    }
     return Members
 }
