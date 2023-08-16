@@ -56,29 +56,41 @@ class FolderService extends Service {
     }
     // 删除文件夹包括里面的api和版本信息
     async delete(folder_id) {
-        // 删除这个文件夹
-        const { ctx } = this
-        const Folder = ctx.model.Folder
-        const folder = await Folder.findByPk(folder_id)
-        if (!folder) {
-            const er = new Error('参数问题')
-            er.status = 400
-            throw er
-        }
-        await folder.destroy()
-        const Api = ctx.model.Apis
-        const Version = ctx.model.Version
-        const apis = await Api.findAll({
-            where: {
-                folder_id
-            },
-            include: Version
-        })
-        for (const api of apis) {
-            for (const version of api.versions) {
-                await version.destroy()
+        try {
+            const { ctx } = this
+            const Folder = ctx.model.Folder
+            const Api = ctx.model.Apis
+            const Version = ctx.model.Version
+            const folder = await Folder.findByPk(folder_id)
+            if (!folder) {
+                const er = new Error('参数问题')
+                er.status = 400
+                throw er
             }
-            await api.destroy()
+            await folder.destroy()
+            const apis = await Api.findAll({
+                where: {
+                    folder_id
+                },
+                include: Version
+            })
+            const deleteApiPromises = apis.map(async (api) => {
+                const versions = api.versions
+                const deleteVersionPromises = versions.map((version) => version.destroy())
+                await Promise.all(deleteVersionPromises)
+                await api.destroy()
+            })
+            await Promise.all(deleteApiPromises)
+            const folderlist = await Folder.findAll({
+                where: {
+                    parent_id: folder_id
+                }
+            })
+            const deleteFolderPromises = folderlist.map((folder) => this.delete(folder.id))
+            await Promise.all(deleteFolderPromises)
+        } catch (error) {
+            // 将错误抛出到调用方进行处理
+            throw error
         }
     }
     async getFolderByProjectId(project_id) {

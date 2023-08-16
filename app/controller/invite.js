@@ -196,7 +196,7 @@ class InviteController extends Controller {
             await service.invite.update(id, status, userId)
             // 看看是不是通过
             if (status === 1) {
-                await service.members.createMembers(projectid, userId, 100)
+                await service.members.createMembers(projectid, userId, 0)
             }
             helper.success(null, '更新成功')
         } catch (err) {
