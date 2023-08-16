@@ -1,6 +1,6 @@
 'use strict'
 const Email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const Phone = /^\+(?:[0-9]●?){6,14}[0-9]$/
+const Phone = /^1[3|4|5|8][0-9]\d{8}$/
 module.exports = {
   RequestLogin: {
     usernameOrEmail: { type: 'string', required: true, description: '邮箱或者用户名', message: '邮箱或者用户名不能为空' },
@@ -26,5 +26,8 @@ module.exports = {
   },
   RequestsearchUsersByEmail: {
     email: { type: 'string', required: false }
+  },
+  RequestUserInfo: {
+    user_id: { type: 'string', required: true, description: '用户id', message: '用户id' }
   }
 }

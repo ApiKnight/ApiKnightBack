@@ -32,7 +32,7 @@ class MembersController extends Controller {
             await service.members.isMemberOfProject(projectid, userId)
             // 拉取项目成员
             const members_list = await service.members.selectMembersListByProjectid(projectid)
-            helper.success(members_list, '更新成功')
+            helper.success(members_list, '拉取成功')
         } catch (err) {
             helper.error(err.status, err.message)
         }

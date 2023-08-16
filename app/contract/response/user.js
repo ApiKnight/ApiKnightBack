@@ -57,9 +57,41 @@ module.exports = {
     code: { type: 'number', example: 200, description: '状态码' },
     message: { type: 'string', example: ' 未注册', description: '成功信息' }
   },
-
   ErrorResponseAlreadyRegistered: {
     code: { type: 'number', example: 409, description: '状态码' },
     message: { type: 'string', example: '邮箱已被注册/用户名已经被注册了', description: '错误信息' }
+  },
+  ResponseUserInfo: {
+    code: { type: 'number', example: 200, description: '状态码' },
+    data: {
+      type: 'object',
+      properties: {
+        id: { type: 'integer', description: '项目id', example: '1000' },
+        username: { type: 'string', description: '用户名' },
+        email: { type: 'string', description: '邮箱' },
+        avatar_url: { type: 'string', description: '头像地址' },
+        phone: { type: 'string', description: '手机号码' },
+        project_list: {
+          type: 'object',
+          properties: {
+            create_time: { type: 'string', description: '创建时间', example: '2023-07-31 16:39:20' },
+            id: { type: 'integer', description: '项目id', example: '1000' },
+            projectname: { type: 'string', description: '项目名', example: '一个项目' },
+            description: { type: 'string', description: '项目描述' },
+            create_user: {
+              type: 'object', properties: {
+                id: { type: 'string', description: '用户 ID' },
+                username: { type: 'string', description: '用户名' },
+                email: { type: 'string', description: '邮箱' },
+                phone: { type: 'string', description: '手机号码' },
+                avatar_url: { type: 'string', description: '头像地址' }
+              }
+            },
+            role: { type: 'string', description: '身份信息', example: '项目所有者' }
+          }
+        }
+      }
+    },
+    message: { type: 'string', example: '查询成功', description: '描述信息' }
   }
 }

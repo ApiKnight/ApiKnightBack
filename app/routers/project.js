@@ -14,5 +14,7 @@ module.exports = app => {
     subRouter.get('/v1/project/list', controller.project.getProjectList)
     // 查询项目
     subRouter.post('/v1/project/query', controller.project.getProjectByProject)
+    // 查询项目概要
+    subRouter.post('/v1/project/querysummary', controller.project.getProjectSummaryByProjectId)
 
 }

@@ -161,6 +161,7 @@ class UserService extends Service {
       where: { id: userid },
       attributes: ['id', 'username', 'email', 'avatar_url', 'phone'] // 根据需要选择要返回的用户属性
     })
+    console.log('user是', user)
     const result = user.toJSON()
     return result
   }
