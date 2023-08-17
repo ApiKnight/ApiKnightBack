@@ -86,7 +86,10 @@ module.exports = {
             type: 'object',
             properties: {
                 projectname: { type: 'string', description: '项目名称' },
-                description: { type: 'string', description: '项目描述' }
+                description: { type: 'string', description: '项目描述' },
+                create_time: { type: 'string', description: '创建时间', example: '2023-07-31 16:39:20' },
+                apis_count: { type: 'number', description: '项目拥有apis数量' },
+                members_count: { type: 'number', description: '项目拥有成员数量' }
             }
         },
         message: { type: 'string', example: '查询成功', description: '描述信息' }

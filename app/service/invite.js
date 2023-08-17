@@ -62,7 +62,7 @@ class InviteService extends Service {
         })
         return invites
     }
-    // 添加一条用户申请加入组织记录
+    // 修改审批状态
     async update(id, status, userId) {
         const record = await this.ctx.model.Invite.findByPk(id)
         const recordresult = record.toJSON()
