@@ -101,7 +101,7 @@ class ProjectService extends Service {
             where: {
                 id: projectid
             },
-            attributes: ['projectname', 'description']
+            attributes: ['projectname', 'description', 'create_time']
         })
         project = project.toJSON()
         if (!project) {

@@ -100,6 +100,14 @@ class ApisService extends Service {
         })
         return apis
     }
+    async getApisCountProjectId(project_id) {
+        const apiCount = await this.ctx.model.Apis.count({
+            where: {
+                project_id
+            }
+        })
+        return apiCount
+    }
 }
 
 module.exports = ApisService

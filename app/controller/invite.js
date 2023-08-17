@@ -104,7 +104,6 @@ class InviteController extends Controller {
             const userId = this.ctx.state.user.id
             // 获取申请加入的项目信息
             const project = await service.project.getByProjectId(projectid)
-            console.log(project)
             // 在邀请表invite里新增一条请求记录
             await service.invite.create({ project, userId })
             helper.success(null, '申请成功')
