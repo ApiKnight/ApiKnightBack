@@ -10,5 +10,6 @@ module.exports = app => {
     subRouter.post('/v1/folder/update', controller.folder.update)
     // 删除文件夹
     subRouter.post('/v1/folder/delete', controller.folder.delete)
-
+    // 查询文件夹
+    subRouter.post('/v1/folder/queryname', controller.folder.queryFolderName)
 }

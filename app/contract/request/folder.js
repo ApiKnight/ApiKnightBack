@@ -12,5 +12,8 @@ module.exports = {
     },
     RequestFolderDelete: {
         folder_id: { type: 'string', required: true, description: '文件夹id', message: '文件夹id' }
+    },
+    RequestFolderQueryName: {
+        folder_id: { type: 'string', required: true, description: '文件夹id', message: '文件夹id' }
     }
 }
