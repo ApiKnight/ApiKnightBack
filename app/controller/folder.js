@@ -127,6 +127,39 @@ class FolderController extends Controller {
             helper.error(err.status, err.message)
         }
     }
+    /**
+* @summary 根据文件夹id获取文件夹名称
+* @description 根据文件夹id获取文件夹名称
+* @router post /v1/folder/queryname
+* @request body RequestFolderQueryName
+* @response 200 RespnseFolderQueryName 请求成功
+* @response 400 ErrorResponse 参数问题
+* @response 403 ForbiddenError 无权
+* @response 401 ErrorResponseUnauthorized 未登录
+* @response 500 InternalServerError 未知错误
+*/
+    async queryFolderName() {
+        const { service, helper, request, validate, rule, app } = this.ctx
+        const { folder_id } = request.body
+        try {
+            // 参数校验
+            const passed = await validate.call(this, rule.RequestFolderQueryName, request.body)
+            if (!passed) {
+                const err = new Error('参数验证错误')
+                err.status = 400
+                throw err
+            }
+            // 获取请求用户ID
+            const userId = this.ctx.state.user.id
+            // 查到这个文件夹
+            const folderresult = await service.folder.getFolderByid(folder_id)
+            // 通过这个apis所属的projectid查询他是不是成员
+            await service.members.isMemberOfProject(folderresult.project_id, userId)
+            helper.success(folderresult.name, '查询成功')
+        } catch (err) {
+            helper.error(err.status, err.message)
+        }
+    }
 }
 
 module.exports = FolderController
