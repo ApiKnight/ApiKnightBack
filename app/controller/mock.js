@@ -19,7 +19,7 @@ class MockController extends Controller {
          * @response 500 InternalServerError 未知错误
          */
     async requestForReal() {
-      const { curl, helper, rule, request, validate } = this.ctx
+      const { helper, rule, request, validate } = this.ctx
       const { url, method, params, data, header } = request.body
       try {
         // 参数校验
@@ -37,12 +37,18 @@ class MockController extends Controller {
           throw err
         }
 
+        // 解析url，合并query参数
+        const parsedUrl = new URL(url)
+        const urlSearchParams = new URLSearchParams(parsedUrl.search)
+        const urlQueryParams = Object.fromEntries(urlSearchParams.entries())
+        const finalParams = { ...urlQueryParams, ...params }
+
         // 进行请求转发
         const response = await axios({
-          url,
+          url: parsedUrl.pathname,
           method,
           data,
-          params,
+          params: finalParams,
           headers: header
         })
 
