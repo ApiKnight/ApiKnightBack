@@ -150,7 +150,7 @@ class UserService extends Service {
         email: {
           [this.ctx.app.Sequelize.Op.like]: `%${email}%`
         }
-      }, attributes: ['id', 'username', 'email', 'avatar_url']
+      }, attributes: [ 'id', 'username', 'email', 'avatar_url' ]
     })
     return users
   }
@@ -159,7 +159,7 @@ class UserService extends Service {
   async getUserById(userid) {
     const user = await this.ctx.model.User.findOne({
       where: { id: userid },
-      attributes: ['id', 'username', 'email', 'avatar_url', 'phone'] // 根据需要选择要返回的用户属性
+      attributes: [ 'id', 'username', 'email', 'avatar_url', 'phone' ] // 根据需要选择要返回的用户属性
     })
     console.log('user是', user)
     const result = user.toJSON()
