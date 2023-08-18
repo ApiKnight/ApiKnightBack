@@ -129,6 +129,11 @@ class ProjectController extends Controller {
                     return middle
                 })
             )
+            project_list.sort((a, b) => {
+                const timeA = new Date(a.create_time)
+                const timeB = new Date(b.create_time)
+                return timeA - timeB
+            })
             helper.success(project_list, '获取成功')
         } catch (error) {
             helper.error(error.status, error.message)
@@ -175,8 +180,8 @@ class ProjectController extends Controller {
         }
     }
     /**
-   * @summary 通过project_id获取项目概述
-   * @description 通过project_id获取项目概述
+   * @summary 通过projectid获取项目概述
+   * @description 通过projectid获取项目概述
    * @router post /v1/project/querysummary
    * @request post RequestQueryProject
    * @response 200 ResponseQueryProjectSummary 请求成功
@@ -195,6 +200,13 @@ class ProjectController extends Controller {
             }
             // 通过项目id列表查询项目信息
             const project_result = await service.project.getProjectSummaryByProjectId(projectid)
+            // 获取它里面有多少个api
+            const apis_count = await service.apis.getApisCountProjectId(projectid)
+            project_result.apis_count = apis_count
+            // 获取它里面有多少个成员数目
+            const membercount = await service.members.getMembersCountProjectId(projectid)
+            project_result.members_count = membercount
+            // 获取它有多少个用例
             helper.success(project_result, '获取成功')
         } catch (error) {
             helper.error(error.status, error.message)

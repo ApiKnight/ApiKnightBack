@@ -96,5 +96,13 @@ class MembersService extends Service {
             throw err
         }
     }
+    async getMembersCountProjectId(project_id) {
+        const MembersCount = await this.ctx.model.Members.count({
+            where: {
+                project_id
+            }
+        })
+        return MembersCount
+    }
 }
 module.exports = MembersService
