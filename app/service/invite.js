@@ -27,13 +27,13 @@ class InviteService extends Service {
                 'create_time',
                 'approve_time',
                 'project_id',
-                [literal('user.username'), 'name'] // 重命名字段为 'username'
+                [ literal('user.username'), 'name' ] // 重命名字段为 'username'
             ],
             include: {
                 model: ctx.model.User,
                 attributes: []
             },
-            order: [['create_time', 'ASC']],
+            order: [[ 'create_time', 'ASC' ]],
             raw: true
         })
         return invites
@@ -51,13 +51,13 @@ class InviteService extends Service {
                 'create_time',
                 'approve_time',
                 'project_id',
-                [literal('`Project`.`projectname`'), 'projectname']
+                [ literal('`Project`.`projectname`'), 'projectname' ]
             ],
             include: {
                 model: ctx.model.Project,
                 attributes: [] // 空数组表示不获取其他属性
             },
-            order: [['create_time', 'ASC']],
+            order: [[ 'create_time', 'ASC' ]],
             raw: true// 获取原始数据
         })
         return invites

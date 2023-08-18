@@ -1,7 +1,7 @@
 {
-  "name": "template-node-egg",
-  "version": "1.0.0",
-  "description": "基于 Egg.js 的后端脚手架。",
+  "name": "api-knight-backend",
+  "version": "0.1.0",
+  "description": "基于 Egg.js 的HTTP接口管理平台后端",
   "private": true,
   "egg": {
     "declarations": true
@@ -21,6 +21,7 @@
     "autod": "autod"
   },
   "dependencies": {
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "cross-env": "^7.0.3",
     "egg": "^2.33.1",
@@ -36,6 +37,7 @@
     "mysql2": "^2.3.3",
     "nodemailer": "^6.9.4",
     "nodemailer-smtp-transport": "^2.7.4",
+    "path-to-regexp": "^6.2.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -45,33 +47,10 @@
     "egg-ci": "^1.19.0",
     "egg-mock": "^4.2.0",
     "eslint": "^8.5.0",
-    "eslint-config-egg": "^10.0.0"
+    "eslint-config-egg": "^12.2.1"
   },
   "engines": {
     "node": ">=10.0.0"
   },
-  "license": "MIT",
-  "homepage": "https://github.com/wytxer/template-node-egg/#readme",
-  "keywords": [
-    "web",
-    "app",
-    "http",
-    "application",
-    "framework",
-    "middleware",
-    "koa",
-    "egg",
-    "template"
-  ],
-  "author": {
-    "name": "wytxer",
-    "url": "https://github.com/wytxer"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wytxer/template-node-egg.git"
-  },
-  "bugs": {
-    "url": "https://github.com/wytxer/template-node-egg/issues"
-  }
+  "license": "MIT"
 }
