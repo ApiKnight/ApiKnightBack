@@ -57,9 +57,10 @@ module.exports = app => {
     apiPrefixName,
     apiPrefix,
     formatTimet: 'YYYY-MM-DD HH:mm:ss',
-    addpower: 100,
-    deletepower: 10,
-    writepower: 1,
+    tourist: 4,
+    member: 3,
+    manager: 2,
+    creater: 1,
     // 默认的 code 码和错误提示信息配置，只需要改这一个地方即可
     resCode: {
       // 服务器异常的 code 标识和提示，一般都不需要改

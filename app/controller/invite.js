@@ -38,8 +38,13 @@ class InviteController extends Controller {
             const projectresult = await service.project.getByProjectId(projectid)
             // 查询发起者信息
             const createuser = await service.user.info()
-            // 判断用户是不是项目所有者
-            await service.project.isOwner(projectid, createuser.id)
+            // 判断用户是不是正式成员
+            const isresult = await service.members.validate_permissions(createuser.id, projectid, app.config.manager)
+            if (!isresult) {
+                const err = new Error('无权操作')
+                err.status = 403
+                throw err
+            }
             // 邀请链接
             // const invite_url = app.config.domainname + '/v1/confirmation/' + projectid
             const invite_url = `http://127.0.0.1:5173/receive?projectid=${projectid}`
@@ -104,6 +109,8 @@ class InviteController extends Controller {
             const userId = this.ctx.state.user.id
             // 获取申请加入的项目信息
             const project = await service.project.getByProjectId(projectid)
+            // 看看有没有待审批的记录
+            await service.invite.checkExist(projectid, userId)
             // 在邀请表invite里新增一条请求记录
             await service.invite.create({ project, userId })
             helper.success(null, '申请成功')
@@ -112,7 +119,7 @@ class InviteController extends Controller {
         }
     }
     /**
-    * @summary 项目拥有者拉取审批列表
+    * @summary 项目拥有者/管理员拉取审批列表
     * @description 传入projectid,userid无需传入,在token的解析内容里就有
     * @router post /v1/invite/wlist
     * @request body RequestInviteList
@@ -123,7 +130,7 @@ class InviteController extends Controller {
     * @response 500 InternalServerError 未知错误
     */
     async inviteList1() {
-        const { service, helper, rule, request, validate } = this.ctx
+        const { service, helper, rule, request, validate, app } = this.ctx
         const { projectid } = request.body
         try {
             // 参数校验
@@ -135,8 +142,13 @@ class InviteController extends Controller {
             }
             // 获取请求用户ID
             const userId = this.ctx.state.user.id
-            // 判断用户是不是项目所有者
-            await service.project.isOwner(projectid, userId)
+            // 判断用户是不是管理员或者所有者
+            const isresult = await service.members.validate_permissions(userId, projectid, app.config.manager)
+            if (!isresult) {
+                const err = new Error('无权操作')
+                err.status = 403
+                throw err
+            }
             // 拉取审批列表
             const project = await service.invite.list1(projectid, userId)
             helper.success(project, '拉取成功')
@@ -167,7 +179,7 @@ class InviteController extends Controller {
         }
     }
     /**
- * @summary 项目管理员修改审批状态
+ * @summary 项目管理员/所有者修改审批状态
  * @description 传入projectid,审批记录id,修改状态status 0待审批,1通过,-1拒绝
  * @router post /v1/invite/updatestatus
  * @request body RequestInviteUpdate
@@ -177,7 +189,7 @@ class InviteController extends Controller {
  * @response 500 InternalServerError 修改失败
  */
     async inviteUpdate() {
-        const { service, helper, rule, request, validate } = this.ctx
+        const { service, helper, rule, request, validate, app } = this.ctx
         const { status, id, projectid } = request.body
         try {
             // 参数校验
@@ -189,13 +201,20 @@ class InviteController extends Controller {
             }
             // 获取请求用户ID
             const userId = this.ctx.state.user.id
-            // 判断用户是不是项目所有者
-            await service.project.isOwner(projectid, userId)
+            // 判断用户是不是管理员或者所有者
+            const isresult = await service.members.validate_permissions(userId, projectid, app.config.manager)
+            if (!isresult) {
+                const err = new Error('无权操作')
+                err.status = 403
+                throw err
+            }
             // 修改状态
             await service.invite.update(id, status, userId)
+            // 查这条记录
+            const result = await service.invite.getInvitedataById(id)
             // 看看是不是通过
-            if (status === 1) {
-                await service.members.createMembers(projectid, userId, 0)
+            if (result.status == 1) {
+                await service.members.createMembers(projectid, result.invitee_id, 3)
             }
             helper.success(null, '更新成功')
         } catch (err) {

@@ -74,5 +74,29 @@ class InviteService extends Service {
         record.status = status
         await record.save()
     }
+    async getInvitedataById(id) {
+        const resultinfo = await this.ctx.model.Invite.findOne({ where: { id } })
+        if (!resultinfo) {
+            const error = new Error('未知错误')
+            error.status = 500
+            throw error
+        }
+        return resultinfo.toJSON()
+    }
+    async checkExist(projectId, userId) {
+        const { ctx } = this
+        const count = await ctx.model.Invite.count({
+            where: {
+                project_id: projectId,
+                invitee_id: userId,
+                status: { $ne: 0 } // 只查询非待审批状态的记录
+            }
+        })
+        if (count > 0) {
+            const error = new Error('存在待审批记录')
+            error.status = 500
+            throw error
+        }
+    }
 }
 module.exports = InviteService
