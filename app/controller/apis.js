@@ -30,17 +30,15 @@ class ApisController extends Controller {
             // 获取请求用户ID
             const userId = this.ctx.state.user.id
             // 看看他有没有创建的资格
-            const isresult = await service.members.validate_permissions(userId, project_id, app.config.addpower)
-            if (isresult) {
-                // 尝试创建
-                await service.apis.create(userId, name, folder_id, request_data, response_data, project_id, description)
-                helper.success(null, '创建成功')
-            } else {
+            const isresult = await service.members.validate_permissions(userId, project_id, app.config.member)
+            if (!isresult) {
                 const err = new Error('无权操作')
                 err.status = 403
                 throw err
             }
-
+            // 尝试创建
+            await service.apis.create(userId, name, folder_id, request_data, response_data, project_id, description)
+            helper.success(null, '创建成功')
         } catch (err) {
             helper.error(err.status, err.message)
         }
@@ -72,18 +70,17 @@ class ApisController extends Controller {
             // 查询这个apis的信息
             const apiresult = await service.apis.getApiById(apis_id)
             // 通过这个apis所属的projectid看看他有没有删除的资格
-            const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.deletepower)
-            if (isresult) {
-                // 尝试删除
-                await service.apis.delete(apis_id)
-                // 删除对应的历史记录
-                await service.version.deleteVersionByApisId(apis_id)
-                helper.success(null, '删除成功')
-            } else {
+            const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.member)
+            if (!isresult) {
                 const err = new Error('无权操作', apiresult)
                 err.status = 403
                 throw err
             }
+            // 尝试删除
+            await service.apis.delete(apis_id)
+            // 删除对应的历史记录
+            await service.version.deleteVersionByApisId(apis_id)
+            helper.success(null, '删除成功')
 
         } catch (err) {
             helper.error(err.status, err.message)
@@ -116,7 +113,7 @@ class ApisController extends Controller {
             // 查询这个apis的信息
             const apiresult = await service.apis.getApiById(apis_id)
             // 通过这个apis所属的projectid看看他有没有更改的资格
-            const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.writepower)
+            const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.member)
             // 核实folder_id合不合法
             if (folder_id) {
                 await service.folder.checkFolderInProject(folder_id, apiresult.project_id)
@@ -163,8 +160,13 @@ class ApisController extends Controller {
             const userId = this.ctx.state.user.id
             // 查询这个apis的信息
             const apiresult = await service.apis.getApiById(apis_id)
-            // 通过这个apis所属的projectid查询他是不是成员
-            await service.members.isMemberOfProject(apiresult.project_id, userId)
+            // 判断用户是不是正式成员
+            const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.member)
+            if (!isresult) {
+                const err = new Error('无权操作')
+                err.status = 403
+                throw err
+            }
             helper.success(apiresult, '更改成功')
         } catch (err) {
             helper.error(err.status, err.message)
@@ -182,7 +184,7 @@ class ApisController extends Controller {
 * @response 500 InternalServerError 未知错误
 */
     async apisVersionList() {
-        const { service, helper, request, validate, rule } = this.ctx
+        const { service, helper, request, validate, rule, app } = this.ctx
         const { apis_id } = request.body
         try {
             // 参数校验
@@ -196,8 +198,13 @@ class ApisController extends Controller {
             const userId = this.ctx.state.user.id
             // 查询这个apis的信息
             const apiresult = await service.apis.getApiById(apis_id)
-            // 通过这个apis所属的projectid查询他是不是成员
-            await service.members.isMemberOfProject(apiresult.project_id, userId)
+            // 判断用户是不是正式成员
+            const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.member)
+            if (!isresult) {
+                const err = new Error('无权操作')
+                err.status = 403
+                throw err
+            }
             // 查询这个apis的历史版本记录
             const versionList = await service.version.selectVersionListByApisId(apis_id)
             helper.success(versionList, '查询成功')
@@ -234,7 +241,7 @@ class ApisController extends Controller {
             // 查询这个apis的信息
             const apiresult = await service.apis.getApiById(version.apis_id)
             // 验证更改权限
-            const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.writepower)
+            const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.member)
             if (isresult) {
                 await service.apis.update(userId, version.apis_id, null, version.response_data, version.request_data, version.description, version.name)
                 // 新增对应的历史记录

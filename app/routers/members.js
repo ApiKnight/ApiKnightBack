@@ -8,4 +8,8 @@ module.exports = app => {
     subRouter.post('/v1/members/list', controller.members.getMembers)
     // 更新成员权限
     subRouter.post('/v1/members/update', controller.members.membersRoleUpdate)
+    // 删除成员
+    subRouter.post('/v1/members/delete', controller.members.delete)
+    // 转让所有身份
+    subRouter.post('/v1/members/convert', controller.members.convert)
 }

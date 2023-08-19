@@ -30,7 +30,7 @@ class FolderController extends Controller {
             // 获取请求用户ID
             const userId = this.ctx.state.user.id
             // 看看他有没有创建的资格
-            const isresult = await service.members.validate_permissions(userId, project_id, app.config.addpower)
+            const isresult = await service.members.validate_permissions(userId, project_id, app.config.member)
             if (isresult) {
                 // 尝试创建
                 await service.folder.create(parent_id, name, project_id)
@@ -72,7 +72,7 @@ class FolderController extends Controller {
             // 查到这个文件夹
             const folderresult = await service.folder.getFolderByid(folder_id)
             // 看看他有没有更改的资格
-            const isresult = await service.members.validate_permissions(userId, folderresult.project_id, app.config.writepower)
+            const isresult = await service.members.validate_permissions(userId, folderresult.project_id, app.config.member)
             if (isresult) {
                 // 尝试更改
                 await service.folder.update(folder_id, parent_id, name)
@@ -113,7 +113,7 @@ class FolderController extends Controller {
             // 查到这个文件夹
             const folderresult = await service.folder.getFolderByid(folder_id)
             // 看看他有没有删除的资格
-            const isresult = await service.members.validate_permissions(userId, folderresult.project_id, app.config.deletepower)
+            const isresult = await service.members.validate_permissions(userId, folderresult.project_id, app.config.member)
             if (isresult) {
                 // 尝试删除
                 await service.folder.delete(folder_id)
@@ -153,8 +153,13 @@ class FolderController extends Controller {
             const userId = this.ctx.state.user.id
             // 查到这个文件夹
             const folderresult = await service.folder.getFolderByid(folder_id)
-            // 通过这个apis所属的projectid查询他是不是成员
-            await service.members.isMemberOfProject(folderresult.project_id, userId)
+            // 判断用户是不是正式成员
+            const isresult = await service.members.validate_permissions(userId, folderresult.project_id, app.config.member)
+            if (!isresult) {
+                const err = new Error('无权操作')
+                err.status = 403
+                throw err
+            }
             helper.success(folderresult.name, '查询成功')
         } catch (err) {
             helper.error(err.status, err.message)

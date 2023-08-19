@@ -247,7 +247,7 @@ class UserController extends Controller {
 * @response 401 ErrorResponseUnauthorized 未登录
 */
   async queryUserSpaceInfo() {
-    const { service, helper, state, request } = this.ctx
+    const { service, helper, request } = this.ctx
     const { user_id } = request.body
     try {
       // 调用查询

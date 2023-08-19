@@ -16,5 +16,13 @@ module.exports = {
     ResponseRoleUpdate: {
         code: { type: 'number', example: 200, description: '状态码' },
         message: { type: 'string', example: '更新成功', description: '描述信息' }
+    },
+    RespnseMembersDelete: {
+        code: { type: 'number', example: 200, description: '状态码' },
+        message: { type: 'string', example: '删除成功', description: '描述信息' }
+    },
+    ResponseMembersConvert: {
+        code: { type: 'number', example: 200, description: '状态码' },
+        message: { type: 'string', example: '转让成功', description: '描述信息' }
     }
 }
