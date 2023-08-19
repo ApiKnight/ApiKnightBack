@@ -45,9 +45,9 @@ class MockController extends Controller {
 
         // 进行请求转发
         const response = await axios({
-          url: parsedUrl.pathname,
+          url: parsedUrl.protocol + '//' + parsedUrl.host + parsedUrl.pathname,
           method,
-          data,
+          data: request.body,
           params: finalParams,
           headers: header
         })
