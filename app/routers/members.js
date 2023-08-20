@@ -12,4 +12,7 @@ module.exports = app => {
     subRouter.post('/v1/members/delete', controller.members.delete)
     // 转让所有身份
     subRouter.post('/v1/members/convert', controller.members.convert)
+    // 查询用户权限
+    subRouter.post('/v1/members/queryrole', controller.members.queryRole)
+
 }

@@ -15,5 +15,8 @@ module.exports = {
     RequestMembersConvert: {
         project_id: { type: 'integer', required: true, description: '项目id', message: '项目id' },
         user_id: { type: 'string', required: true, description: '转让成员id', message: '转让成员id' }
+    },
+    RequestMembersQueryRole: {
+        project_id: { type: 'integer', required: true, description: '项目id', message: '项目id' },
     }
 }

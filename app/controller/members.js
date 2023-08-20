@@ -167,6 +167,36 @@ class MembersController extends Controller {
             helper.error(err.status, err.message)
         }
     }
+    /**
+* @summary 查询用户权限
+* @description 查询用户权限
+* @router post /v1/members/queryrole
+* @request body RequestMembersQueryRole
+* @response 200 ResponseMembersQueryRole 请求成功
+* @response 400 ErrorResponse 参数问题
+* @response 401 ErrorResponseUnauthorized 未登录
+* @response 403 ForbiddenError 无权
+* @response 500 InternalServerError 未知错误
+*/
+    async queryRole() {
+        const { service, helper, rule, request, validate } = this.ctx
+        const { project_id } = request.body
+        try {
+            // 参数校验
+            const passed = await validate.call(this, rule.RequestMembersQueryRole, request.body)
+            if (!passed) {
+                const err = new Error('参数验证错误')
+                err.status = 400
+                throw err
+            }
+            // 获取请求用户ID
+            const userId = this.ctx.state.user.id
+            const role = await service.members.queryRole(userId, project_id)
+            helper.success({ role }, '查询成功')
+        } catch (error) {
+            helper.error(error.status, error.message)
+        }
+    }
 }
 
 module.exports = MembersController
