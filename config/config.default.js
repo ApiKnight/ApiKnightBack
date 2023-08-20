@@ -21,7 +21,7 @@ module.exports = app => {
   /**
    * 中间件配置
    */
-  config.middleware = ['catchError', 'permission']
+  config.middleware = [ 'catchError', 'permission' ]
 
   /**
    * 数据库相关配置
@@ -123,7 +123,8 @@ module.exports = app => {
       `${apiPrefix}/v1/user/login`,
       `${apiPrefix}/v1/user/register`,
       `${apiPrefix}/v1/user/checkExist`,
-      `${apiPrefix}/v1/project/querysummary`
+      `${apiPrefix}/v1/project/querysummary`,
+      `${apiPrefix}/v1/mock/real`
     ]
   }
 
@@ -156,7 +157,7 @@ module.exports = app => {
       description: `${userConfig.appName} 接口平台。`,
       version: '1.0.0'
     },
-    schemes: ['http', 'https']
+    schemes: [ 'http', 'https' ]
   }
   /**
    * 小程序平台相关配置，可往下新增头条小程序、百度小程序、钉钉小程序等相关配置

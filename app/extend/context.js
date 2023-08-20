@@ -1,4 +1,5 @@
 'use strict'
+
 const bcrypt = require('bcrypt')
 module.exports = {
     async hashPassword(password, saltRounds = 10, hashLength = 60) {
