@@ -24,5 +24,15 @@ module.exports = {
     ResponseMembersConvert: {
         code: { type: 'number', example: 200, description: '状态码' },
         message: { type: 'string', example: '转让成功', description: '描述信息' }
+    },
+    ResponseMembersQueryRole: {
+        code: { type: 'number', example: 200, description: '状态码' },
+        data: {
+            type: 'object',
+            properties: {
+                role: { type: 'string', description: '权限', example: '1' }
+            }
+        },
+        message: { type: 'string', example: '查询成功', description: '描述信息' }
     }
 }

@@ -117,5 +117,24 @@ class MembersService extends Service {
             throw error
         }
     }
+    async queryRole(user_id, project_id) {
+        try {
+            const member = await this.ctx.model.Members.findOne({
+                where: {
+                    user_id,
+                    project_id
+                }
+            })
+
+            if (member) {
+                return member.role
+            }
+            return 0
+        } catch (error) {
+            // 处理错误
+            console.error('Error querying role:', error)
+            throw error
+        }
+    }
 }
 module.exports = MembersService
