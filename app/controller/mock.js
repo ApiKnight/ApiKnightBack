@@ -58,6 +58,31 @@ class MockController extends Controller {
         helper.error(err.status, err.message)
       }
     }
+
+    // Todo
+    async findApi() {
+      const method = this.ctx.method.toLowerCase()
+      // 组id或组prefix
+      const id = this.ctx.params[0]
+      const url = this.ctx.params[1]
+      if (await this.ctx.model.Project.findOne({ _id: id })) {
+        // 接口路径模式
+        // 首先进行全匹配，只允许前面多个/
+        const fullReg = new RegExp(`^/?${url}$`)
+        let res = await this.ctx.model.mock.findOne({ url: fullReg, project: id, 'options.method': method })
+        if (!res) {
+          // 全匹配未找到，则进行restful路径参数匹配，如/api/:id
+          // url中每个位置都全匹配或匹配路径参数，((api)|(:.*))
+          let regex = `/${url}`.replace(/(?<=\/).*?((?=(\/))|$)/g, (...args) => `((${args[0]})|(:[^\/]*))`)
+          regex = `^${regex}$`
+          res = await this.ctx.model.mock.findOne({ url: { $regex: regex }, project: id, 'options.method': method })
+        }
+        return res
+      }
+        // 纯hash模式api，全匹配
+        const res = this.ctx.model.mock.findOne({ _id: id, isDeleted: false })
+        return res
+    }
 }
 
 module.exports = MockController
