@@ -81,7 +81,7 @@ class ProjectController extends Controller {
     * @response 500 InternalServerError 未知错误
     */
     async UpdateProject() {
-        const { service, helper, request, validate, rule, state } = this.ctx
+        const { service, helper, request, validate, rule, state, app } = this.ctx
         const { projectid, description, projectname } = request.body
         try {
 
@@ -93,8 +93,13 @@ class ProjectController extends Controller {
             }
             // 获取用户ID
             const userId = state.user.id
-            // 判断用户是不是项目所有者
-            await service.project.isOwner(projectid, userId)
+            // 验证更改权限
+            const isresult = await service.members.validate_permissions(userId, projectid, app.config.manager)
+            if (!isresult) {
+                const err = new Error('无权操作')
+                err.status = 403
+                throw err
+            }
             // 尝试更新
             await service.project.update({ projectid, description, projectname })
             // 拉取项目最新内容

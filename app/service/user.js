@@ -170,7 +170,7 @@ class UserService extends Service {
     const user = await this.ctx.model.Members.findOne({
       where: { user_id: userid, project_id }
     })
-    return user ? (user.role & 10) !== 0 : false
+    return user ? (user.role <= 3) !== 0 : false
   }
 }
 module.exports = UserService

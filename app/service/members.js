@@ -10,7 +10,7 @@ class MembersService extends Service {
             error.status = 403
             throw error
         }
-        return (resultinfo.toJSON().role & validate_power) !== 0
+        return resultinfo.toJSON().role <= validate_power
     }
     // 通过project_id 和 userId 查询角色
     async selectRole(project_id, userId) {
@@ -71,8 +71,8 @@ class MembersService extends Service {
         })
     }
     // 通过id查询成员信息记录
-    async getMembersById(id) {
-        const resultinfo = await this.ctx.model.Members.findOne({ where: { id } })
+    async getMembers(user_id, project_id) {
+        const resultinfo = await this.ctx.model.Members.findOne({ where: { user_id, project_id } })
         if (!resultinfo) {
             const error = new Error('未知错误')
             error.status = 500
@@ -81,13 +81,13 @@ class MembersService extends Service {
         return resultinfo.toJSON()
     }
     // 更改用户角色
-    async updateMembersRole(id, role) {
+    async updateMembersRole(project_id, role, user_id) {
         try {
             await this.ctx.model.Members.update({
                 role
             }, {
                 where: {
-                    id
+                    project_id, user_id
                 }
             })
         } catch (error) {
@@ -103,6 +103,38 @@ class MembersService extends Service {
             }
         })
         return MembersCount
+    }
+    async delete(user_id, project_id) {
+        const { ctx } = this
+        try {
+            const result = await ctx.model.Members.destroy({
+                where: { user_id, project_id }
+            })
+            return result
+        } catch (err) {
+            const error = new Error('未知错误')
+            error.status = 500
+            throw error
+        }
+    }
+    async queryRole(user_id, project_id) {
+        try {
+            const member = await this.ctx.model.Members.findOne({
+                where: {
+                    user_id,
+                    project_id
+                }
+            })
+
+            if (member) {
+                return member.role
+            }
+            return 0
+        } catch (error) {
+            // 处理错误
+            console.error('Error querying role:', error)
+            throw error
+        }
     }
 }
 module.exports = MembersService

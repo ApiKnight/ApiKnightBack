@@ -149,11 +149,7 @@ module.exports = {
     }
 
   },
-  /**
-   * 参数异常
-   * @param {object} code 响应数据，可以是对象或者数组
-   * @param {string} message 提示信息
-   */
+
   error(code, message) {
     const { ctx } = this
     ctx.body = {
