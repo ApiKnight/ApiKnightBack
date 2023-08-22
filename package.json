@@ -33,6 +33,7 @@
     "egg-swagger-doc": "^2.3.2",
     "egg-validate": "^2.0.2",
     "egg-validate-plus": "^1.1.6",
+    "mocker-dsl-core": "^0.1.6",
     "moment": "^2.29.1",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.9.4",

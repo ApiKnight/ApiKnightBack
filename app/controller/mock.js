@@ -2,6 +2,8 @@
 
 const Controller = require('egg').Controller
 const axios = require('axios')
+const buildExampleFromSchema = require('mocker-dsl-core/lib/buildExampleFromSchema')
+const BASE_TYPES = [ 'string', 'number', 'boolean', 'object', 'array' ]
 
 /**
  * @controller Mock模块
@@ -59,29 +61,132 @@ class MockController extends Controller {
       }
     }
 
+    // mock
+    async mock() {
+      const apiDoc = await this.findApi()
+      await this.handleMock(this.ctx.method.toLowerCase(), apiDoc)
+    }
+
     // Todo
     async findApi() {
       const method = this.ctx.method.toLowerCase()
-      // 组id或组prefix
+      // 对应的 id 和 url
       const id = this.ctx.params[0]
       const url = this.ctx.params[1]
-      if (await this.ctx.model.Project.findOne({ _id: id })) {
+      // 先在项目中查找
+      if (await this.ctx.model.Project.findOne({ id })) {
         // 接口路径模式
         // 首先进行全匹配，只允许前面多个/
         const fullReg = new RegExp(`^/?${url}$`)
-        let res = await this.ctx.model.mock.findOne({ url: fullReg, project: id, 'options.method': method })
+        let res = await this.ctx.model.Mock.findOne({ url: fullReg, project_id: id, method })
         if (!res) {
           // 全匹配未找到，则进行restful路径参数匹配，如/api/:id
           // url中每个位置都全匹配或匹配路径参数，((api)|(:.*))
           let regex = `/${url}`.replace(/(?<=\/).*?((?=(\/))|$)/g, (...args) => `((${args[0]})|(:[^\/]*))`)
           regex = `^${regex}$`
-          res = await this.ctx.model.mock.findOne({ url: { $regex: regex }, project: id, 'options.method': method })
+          res = await this.ctx.model.Mock.findOne({ url: { $regex: regex }, project_id: id, method })
         }
         return res
       }
-        // 纯hash模式api，全匹配
-        const res = this.ctx.model.mock.findOne({ _id: id, isDeleted: false })
-        return res
+      // 找不到直接在apis中查找  纯hash模式api，全匹配
+      const res = this.ctx.model.Apis.findOne({ id })
+      return res
+    }
+
+    // 处理mock
+    async handleMock(method, apiDoc) {
+      if (!apiDoc) {
+        return
+      }
+      if (apiDoc.method !== method) {
+        this.ctx.status = 405
+        return
+      }
+      // 校验参数
+      await this.validateParams(apiDoc)
+      this.ctx.body = this.getResponse(apiDoc) || {}
+    }
+
+    // 参数校验
+    async validateParams(apiDoc) {
+      const data = {
+        query: this.ctx.request.query,
+        body: this.ctx.request.body,
+        headers: this.ctx.request.headers
+      }
+
+
+      const { params, method, headers } = apiDoc
+      delete apiDoc.params.path
+      const headersParams = headers.params || []
+      params.headers = headersParams
+      const headersMap = {}
+      headersParams.forEach(item => {
+        if (item && item.key) {
+          headersMap[item.key.toLowerCase()] = item.example
+        }
+      })
+
+      for (const name in params) {
+        const rule = {}
+        // get请求不校验body
+        // if (method === 'get' && name === 'body') continue
+        params[name].forEach(param => {
+          // 参数不必填 && 发送的值为空字符串, 不校验
+          if (!param.required) {
+            const value = data[name] ? data[name][param.key] : ''
+            if (!value) return
+          }
+          // 参数不存在 || 参数类型不属于基本类型，不校验
+          if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
+          if (name === 'headers') {
+            const newKey = param.key.toLowerCase()
+            const headerValue = headersMap[newKey]
+            if (headerValue) {
+              rule[newKey] = {
+                type: 'string',
+                required: true,
+                format: new RegExp(headerValue)
+              }
+            }
+          } else {
+            let validateObj = {}
+            validateObj = {
+              type: this.getValidatorType(name, param.type),
+              required: param.required,
+              allowEmpty: param.type === 'string'
+            }
+            // 最大值校验
+            const { maxLength } = param
+            if (param.type === 'string' && maxLength > 0) {
+              validateObj.max = maxLength
+            }
+            rule[param.key] = validateObj
+          }
+        })
+        this.ctx.validate(rule, data[name])
+      }
+    }
+
+    // 获取mock响应
+    getResponse(apiDoc) {
+      if (apiDoc.response && apiDoc.response.length > 0) {
+      const index = apiDoc.responseIndex
+      const idx = index === -1 ? parseInt(Math.random() * apiDoc.response.length) : index
+      const schema = apiDoc.response[idx]
+      // 模拟异常请求
+      let { status, statusText } = schema
+      status = parseInt(status || 200)
+      if (isNaN(status) || status < 100) {
+        this.ctx.status = 500
+        return { message: 'Status Code不正确' }
+      } else if (status !== 200) {
+        this.ctx.status = status
+        return { message: statusText || '请求异常' }
+      }
+      return buildExampleFromSchema(schema)
+    }
+      return {}
     }
 }
 

@@ -13,7 +13,7 @@ module.exports = app => {
     subRouter.post('/v1/mock/real', controller.mock.requestForReal)
 
     // // mock data
-    // const urlRegexp = pathToRegexp('/v1/mockByUrl/:url*', [])
+    // const urlRegexp = pathToRegexp('/v1/mock/mockByUrl/:url*', [])
     // allMethods.forEach(method => {
     //     subRouter[method](urlRegexp, controller.mock.mockByUrl)
     // })
