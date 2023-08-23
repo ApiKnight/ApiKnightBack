@@ -1,6 +1,7 @@
 'use strict'
 module.exports = {
     RequestCreateProject: {
+        project_img: { type: 'string', required: true, description: '项目头像', message: '项目头像' },
         description: { type: 'string', required: true, description: '项目简介', message: '项目简介' },
         projectname: { type: 'string', required: true, description: '项目名', message: '项目名' }
     },
