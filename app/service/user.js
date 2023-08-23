@@ -61,6 +61,7 @@ class UserService extends Service {
     }
     const userObject = user.toJSON()
 
+
     // 验证密码
     const isPasswordValid = await verifyPassword(password, userObject.password)
     if (!isPasswordValid) {
@@ -76,7 +77,7 @@ class UserService extends Service {
     const token = jwt.sign({
       id: userObject.id
     }, this.app.config.jwt.secret, {
-      expiresIn: '24h'
+      expiresIn: '2h'
     })
     // 返回用户信息和 token
     return { userObject, token }
@@ -113,7 +114,7 @@ class UserService extends Service {
       password = await this.ctx.hashPassword(password)
     }
     // 更新用户信息
-    const [affectedCount] = await this.ctx.model.User.update({ username, email, phone, password }, { where: { id } })
+    const [ affectedCount ] = await this.ctx.model.User.update({ username, email, phone, password }, { where: { id } })
     if (affectedCount === 1) {
       // 更新成功，查询更新后的用户信息
       const updatedUser = await this.ctx.model.User.findOne({ where: { id } })
@@ -149,7 +150,7 @@ class UserService extends Service {
         email: {
           [this.ctx.app.Sequelize.Op.like]: `%${email}%`
         }
-      }, attributes: ['id', 'username', 'email', 'avatar_url']
+      }, attributes: [ 'id', 'username', 'email', 'avatar_url' ]
     })
     return users
   }
@@ -158,7 +159,7 @@ class UserService extends Service {
   async getUserById(userid) {
     const user = await this.ctx.model.User.findOne({
       where: { id: userid },
-      attributes: ['id', 'username', 'email', 'avatar_url', 'phone'] // 根据需要选择要返回的用户属性
+      attributes: [ 'id', 'username', 'email', 'avatar_url', 'phone' ] // 根据需要选择要返回的用户属性
     })
     const result = user.toJSON()
     return result
