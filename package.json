@@ -38,7 +38,6 @@
     "mysql2": "^2.3.3",
     "nodemailer": "^6.9.4",
     "nodemailer-smtp-transport": "^2.7.4",
-    "path-to-regexp": "^6.2.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

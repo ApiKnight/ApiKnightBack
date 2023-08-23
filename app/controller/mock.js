@@ -61,6 +61,42 @@ class MockController extends Controller {
       }
     }
 
+     /**
+         * @summary 创建Mock服务
+         * @description 传入url, method, params, data, header参数,发送请求
+         * @router post /v1/mock/create
+         * @request body RequestApiForReal
+         * @response 200 ResponseApiForReal 请求成功
+         * @response 400 ErrorResponse 参数问题
+         */
+      async create() {
+        const { service, helper, request, validate, rule, app } = this.ctx
+        const { url, method, data, headers, response, params, project_id, api_id } = request.body
+        try {
+          // 参数校验
+          const passed = await validate.call(this, rule.RequestCreateMock, request.body)
+          if (!passed) {
+              const err = new Error('参数验证错误')
+              err.status = 400
+              throw err
+          }
+          // 获取请求用户ID
+          const userId = this.ctx.state.user.id
+          // 看看他有没有创建的资格
+          const isresult = await service.members.validate_permissions(userId, project_id, app.config.member)
+          if (!isresult) {
+              const err = new Error('无权操作')
+              err.status = 403
+              throw err
+          }
+          // 尝试创建
+          await service.mock.create(url, method, data, headers, response, params, project_id, api_id)
+          helper.success(null, '创建成功')
+      } catch (err) {
+          helper.error(err.status, err.message)
+      }
+      }
+
     // mock
     async mock() {
       const apiDoc = await this.findApi()
@@ -76,21 +112,30 @@ class MockController extends Controller {
       // 先在项目中查找
       if (await this.ctx.model.Project.findOne({ id })) {
         // 接口路径模式
-        // 首先进行全匹配，只允许前面多个/
+        // 首先进行全匹配，只允许前面多个/ 没有参数
         const fullReg = new RegExp(`^/?${url}$`)
         let res = await this.ctx.model.Mock.findOne({ url: fullReg, project_id: id, method })
+        res.params = JSON.parse(res.params)
+        res.header = JSON.parse(res.header)
+        res.response = JSON.parse(res.response)
         if (!res) {
           // 全匹配未找到，则进行restful路径参数匹配，如/api/:id
           // url中每个位置都全匹配或匹配路径参数，((api)|(:.*))
           let regex = `/${url}`.replace(/(?<=\/).*?((?=(\/))|$)/g, (...args) => `((${args[0]})|(:[^\/]*))`)
           regex = `^${regex}$`
           res = await this.ctx.model.Mock.findOne({ url: { $regex: regex }, project_id: id, method })
+          res.params = JSON.parse(res.params)
+          res.header = JSON.parse(res.header)
+          res.response = JSON.parse(res.response)
         }
         return res
       }
-      // 找不到直接在apis中查找  纯hash模式api，全匹配
-      const res = this.ctx.model.Apis.findOne({ id })
-      return res
+      // // 找不到直接查找api_id  纯hash模式api，全匹配
+      // const res = this.ctx.model.Mock.findOne({ api_id: id })
+      // res.params = JSON.parse(res.params)
+      // res.header = JSON.parse(res.header)
+      // res.response = JSON.parse(res.response)
+      // return res
     }
 
     // 处理mock
@@ -103,12 +148,31 @@ class MockController extends Controller {
         return
       }
       // 校验参数
-      await this.validateParams(apiDoc)
+      // await this.validateParams(apiDoc)
       this.ctx.body = this.getResponse(apiDoc) || {}
     }
 
-    // 参数校验
-    async validateParams(apiDoc) {
+    // 获取mock响应
+    getResponse(apiDoc) {
+      if (apiDoc.response) {
+      const schema = apiDoc.response
+      // 模拟异常请求
+      let { status, statusText } = schema
+      status = parseInt(status || 200)
+      if (isNaN(status) || status < 100) {
+        this.ctx.status = 500
+        return { message: 'Status Code不正确' }
+      } else if (status !== 200) {
+        this.ctx.status = status
+        return { message: statusText || '请求异常' }
+      }
+      return buildExampleFromSchema(schema)
+    }
+      return {}
+    }
+
+     // 参数校验
+     async validateParams(apiDoc) {
       const data = {
         query: this.ctx.request.query,
         body: this.ctx.request.body,
@@ -166,27 +230,6 @@ class MockController extends Controller {
         })
         this.ctx.validate(rule, data[name])
       }
-    }
-
-    // 获取mock响应
-    getResponse(apiDoc) {
-      if (apiDoc.response && apiDoc.response.length > 0) {
-      const index = apiDoc.responseIndex
-      const idx = index === -1 ? parseInt(Math.random() * apiDoc.response.length) : index
-      const schema = apiDoc.response[idx]
-      // 模拟异常请求
-      let { status, statusText } = schema
-      status = parseInt(status || 200)
-      if (isNaN(status) || status < 100) {
-        this.ctx.status = 500
-        return { message: 'Status Code不正确' }
-      } else if (status !== 200) {
-        this.ctx.status = status
-        return { message: statusText || '请求异常' }
-      }
-      return buildExampleFromSchema(schema)
-    }
-      return {}
     }
 }
 

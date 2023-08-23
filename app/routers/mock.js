@@ -1,7 +1,6 @@
 'use strict'
 
-// const pathToRegexp = require('path-to-regexp')
-// const allMethods = [ 'get', 'post', 'put', 'delete' ]
+const allMethods = [ 'get', 'post', 'put', 'delete' ]
 
 module.exports = app => {
     const { router, controller } = app
@@ -12,6 +11,9 @@ module.exports = app => {
     // 直接运行
     subRouter.post('/v1/mock/real', controller.mock.requestForReal)
 
+    // 创建mock服务
+    subRouter.post('/v1/mock/create', controller.mock.createMock)
+
     // // mock data
     // const urlRegexp = pathToRegexp('/v1/mock/mockByUrl/:url*', [])
     // allMethods.forEach(method => {
@@ -19,7 +21,7 @@ module.exports = app => {
     // })
 
     // const mockUrl = pathToRegexp('/v1/mock/:id/:url*', [])
-    // allMethods.forEach(method => {
-    //     subRouter[method](mockUrl, controller.mock.mock)
-    // })
+    allMethods.forEach(method => {
+        subRouter[method]('/v1/mock/:id/:url*', controller.mock.mock)
+    })
 }
