@@ -130,7 +130,7 @@ class ProjectController extends Controller {
             const project_list = await Promise.all(
                 project_id_list.map(async element => {
                     const middle = await service.project.getByProjectId(element.toJSON().project_id)
-                    middle.role = element.toJSON().role === 1111 ? '所有者' : '成员'
+                    middle.role = ['', '所有者', '管理员', '普通成员', '游客'][element.toJSON().role]
                     return middle
                 })
             )
