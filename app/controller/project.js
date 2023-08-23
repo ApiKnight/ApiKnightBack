@@ -16,7 +16,7 @@ class ProjectController extends Controller {
     */
     async CreatProject() {
         const { service, helper, request, validate, rule, state } = this.ctx
-        const { description, projectname } = request.body
+        const { description, projectname, project_img } = request.body
         try {
             // 参数验证
             const passed = await validate.call(this, rule.RequestCreateProject, request.body)
@@ -28,7 +28,7 @@ class ProjectController extends Controller {
             // 获取用户ID
             const userId = state.user.id
             // 创建项目
-            const createresult = await service.project.create({ projectname, description, create_user: userId })
+            const createresult = await service.project.create({ projectname, description, create_user: userId, project_img })
             // 默认创建一个根目录
             await service.folder.create(null, '根目录', createresult.id)
             delete createresult.create_user
