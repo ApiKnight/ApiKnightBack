@@ -20,5 +20,8 @@ module.exports = {
     },
     RequestQueryProject: {
         projectid: { type: 'integer', required: true, description: '项目id', message: '项目id' }
+    },
+    RequestQueryRootFolderid: {
+        projectid: { type: 'integer', required: true, description: '项目id', message: '项目id' }
     }
 }

@@ -32,6 +32,11 @@ module.exports = app => {
             type: DataTypes.UUID,
             allowNull: false,
             field: 'create_user'
+        },
+        project_img: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'project_img'
         }
     }, {
         timestamps: false,
