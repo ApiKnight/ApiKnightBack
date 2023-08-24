@@ -16,7 +16,7 @@ class ProjectController extends Controller {
     */
     async CreatProject() {
         const { service, helper, request, validate, rule, state } = this.ctx
-        const { description, projectname } = request.body
+        const { description, projectname, project_img } = request.body
         try {
             // 参数验证
             const passed = await validate.call(this, rule.RequestCreateProject, request.body)
@@ -28,7 +28,7 @@ class ProjectController extends Controller {
             // 获取用户ID
             const userId = state.user.id
             // 创建项目
-            const createresult = await service.project.create({ projectname, description, create_user: userId })
+            const createresult = await service.project.create({ projectname, description, create_user: userId, project_img })
             // 默认创建一个根目录
             await service.folder.create(null, '根目录', createresult.id)
             delete createresult.create_user
@@ -130,7 +130,7 @@ class ProjectController extends Controller {
             const project_list = await Promise.all(
                 project_id_list.map(async element => {
                     const middle = await service.project.getByProjectId(element.toJSON().project_id)
-                    middle.role = element.toJSON().role === 1111 ? '所有者' : '成员'
+                    middle.role = ['', '所有者', '管理员', '普通成员', '游客'][element.toJSON().role]
                     return middle
                 })
             )
@@ -213,6 +213,39 @@ class ProjectController extends Controller {
             project_result.members_count = membercount
             // 获取它有多少个用例
             helper.success(project_result, '获取成功')
+        } catch (error) {
+            helper.error(error.status, error.message)
+        }
+    }
+    /**
+* @summary 通过projectid获取项目根目录id
+* @description 通过projectid获取项目概述
+* @router post /v1/project/queryrootfolderid
+* @request post RequestQueryRootFolderid
+* @response 200 RequestQueryRootFolderid 请求成功
+*/
+    async queryrootfolderid() {
+        const { service, helper, validate, rule, request, state, app } = this.ctx
+        const { projectid } = request.body
+        try {
+            const passed = await validate.call(this, rule.RequestQueryRootFolderid, request.body)
+            if (!passed) {
+                const err = new Error('参数验证错误')
+                err.status = 400
+                throw err
+            }
+            // 获取用户ID
+            const userId = state.user.id
+            // 验证更改权限
+            const isresult = await service.members.validate_permissions(userId, projectid, app.config.member)
+            if (!isresult) {
+                const err = new Error('无权操作')
+                err.status = 403
+                throw err
+            }
+            const rootfolderid = await service.folder.queryrootfolderid(projectid)
+            // 获取它有多少个用例
+            helper.success(rootfolderid, '获取成功')
         } catch (error) {
             helper.error(error.status, error.message)
         }

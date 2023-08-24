@@ -16,5 +16,6 @@ module.exports = app => {
     subRouter.post('/v1/project/query', controller.project.getProjectByProject)
     // 查询项目概要
     subRouter.post('/v1/project/querysummary', controller.project.getProjectSummaryByProjectId)
-
+    // 获取项目根目录id
+    subRouter.post('/v1/project/queryrootfolderid', controller.project.queryrootfolderid)
 }

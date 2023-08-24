@@ -23,42 +23,39 @@ class MockController extends Controller {
     async requestForReal() {
       const { helper, rule, request, validate } = this.ctx
       const { url, method, params, data, header } = request.body
-      try {
-        // 参数校验
-        const passed = await validate.call(this, rule.RequestApiForReal, request.body)
-        if (!passed) {
-          const err = new Error('参数验证错误')
-          err.status = 400
-          throw err
-        }
-        // 不支持回环地址
-        const isLocalhost = url.indexOf('127.0.0.1') > -1 || url.indexOf('localhost') > -1
-        if (isLocalhost) {
-          const err = new Error('禁止使用回环地址')
-          err.status = 400
-          throw err
-        }
+      // try {
+      //   // 参数校验
+      //   const passed = await validate.call(this, rule.RequestApiForReal, request.body)
+      //   if (!passed) {
+      //     const err = new Error('参数验证错误')
+      //     err.status = 400
+      //     throw err
+      //   }
+      //   // 不支持回环地址
+      //   const isLocalhost = url.indexOf('127.0.0.1') > -1 || url.indexOf('localhost') > -1
+      //   if (isLocalhost) {
+      //     const err = new Error('禁止使用回环地址')
+      //     err.status = 400
+      //     throw err
+      //   }
 
-        // 解析url，合并query参数
-        const parsedUrl = new URL(url)
-        const urlSearchParams = new URLSearchParams(parsedUrl.search)
-        const urlQueryParams = Object.fromEntries(urlSearchParams.entries())
-        const finalParams = { ...urlQueryParams, ...params }
+      // 解析url，合并query参数
+      const parsedUrl = new URL(url)
+      const urlSearchParams = new URLSearchParams(parsedUrl.search)
+      const urlQueryParams = Object.fromEntries(urlSearchParams.entries())
+      const finalParams = { ...urlQueryParams, ...params }
 
-        // 进行请求转发
-        const response = await axios({
-          url: parsedUrl.protocol + '//' + parsedUrl.host + parsedUrl.pathname,
-          method,
-          data: request.body,
-          params: finalParams,
-          headers: header
-        })
+      // 进行请求转发
+      const response = await axios({
+        url: parsedUrl.protocol + '//' + parsedUrl.host + parsedUrl.pathname,
+        method,
+        data: request.body,
+        params: finalParams,
+        headers: header
+      })
 
-        this.ctx.body = response.data
-        this.ctx.status = response.status
-      } catch (err) {
-        helper.error(err.status, err.message)
-      }
+      this.ctx.body = response.data
+      this.ctx.status = response.status
     }
 
      /**
@@ -169,67 +166,6 @@ class MockController extends Controller {
       return buildExampleFromSchema(schema)
     }
       return {}
-    }
-
-     // 参数校验
-     async validateParams(apiDoc) {
-      const data = {
-        query: this.ctx.request.query,
-        body: this.ctx.request.body,
-        headers: this.ctx.request.headers
-      }
-
-
-      const { params, method, headers } = apiDoc
-      delete apiDoc.params.path
-      const headersParams = headers.params || []
-      params.headers = headersParams
-      const headersMap = {}
-      headersParams.forEach(item => {
-        if (item && item.key) {
-          headersMap[item.key.toLowerCase()] = item.example
-        }
-      })
-
-      for (const name in params) {
-        const rule = {}
-        // get请求不校验body
-        // if (method === 'get' && name === 'body') continue
-        params[name].forEach(param => {
-          // 参数不必填 && 发送的值为空字符串, 不校验
-          if (!param.required) {
-            const value = data[name] ? data[name][param.key] : ''
-            if (!value) return
-          }
-          // 参数不存在 || 参数类型不属于基本类型，不校验
-          if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
-          if (name === 'headers') {
-            const newKey = param.key.toLowerCase()
-            const headerValue = headersMap[newKey]
-            if (headerValue) {
-              rule[newKey] = {
-                type: 'string',
-                required: true,
-                format: new RegExp(headerValue)
-              }
-            }
-          } else {
-            let validateObj = {}
-            validateObj = {
-              type: this.getValidatorType(name, param.type),
-              required: param.required,
-              allowEmpty: param.type === 'string'
-            }
-            // 最大值校验
-            const { maxLength } = param
-            if (param.type === 'string' && maxLength > 0) {
-              validateObj.max = maxLength
-            }
-            rule[param.key] = validateObj
-          }
-        })
-        this.ctx.validate(rule, data[name])
-      }
     }
 }
 

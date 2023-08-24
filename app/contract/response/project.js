@@ -8,7 +8,8 @@ module.exports = {
                 create_time: { type: 'string', description: '创建时间', example: '2023-07-31 16:39:20' },
                 id: { type: 'integer', description: '项目id', example: '1000' },
                 projectname: { type: 'string', description: '项目名', example: '一个项目' },
-                description: { type: 'string', description: '项目描述' }
+                description: { type: 'string', description: '项目描述' },
+                project_img: { type: 'string', description: '项目头像', message: '项目头像' }
             }
         },
         message: { type: 'string', example: '创建成功', description: '描述信息' }
@@ -26,6 +27,7 @@ module.exports = {
                 id: { type: 'integer', description: '项目id', example: '1000' },
                 projectname: { type: 'string', description: '项目名', example: '一个项目' },
                 description: { type: 'string', description: '项目描述' },
+                project_img: { type: 'string', description: '项目头像', message: '项目头像' },
                 create_user: {
                     type: 'object', properties: {
                         id: { type: 'string', description: '用户 ID' },
@@ -61,6 +63,7 @@ module.exports = {
                 id: { type: 'integer', description: '项目id', example: '1000' },
                 projectname: { type: 'string', description: '项目名', example: '一个项目' },
                 description: { type: 'string', description: '项目描述' },
+                project_img: { type: 'string', description: '项目头像', message: '项目头像' },
                 create_user: {
                     type: 'object', properties: {
                         id: { type: 'string', description: '用户 ID' },
@@ -85,6 +88,7 @@ module.exports = {
         data: {
             type: 'object',
             properties: {
+                project_img: { type: 'string', description: '项目头像', message: '项目头像' },
                 projectname: { type: 'string', description: '项目名称' },
                 description: { type: 'string', description: '项目描述' },
                 create_time: { type: 'string', description: '创建时间', example: '2023-07-31 16:39:20' },
@@ -93,7 +97,8 @@ module.exports = {
             }
         },
         message: { type: 'string', example: '查询成功', description: '描述信息' }
+    },
+    RequestQueryRootFolderid: {
+        id: { type: 'string', description: '根目录id' }
     }
-
-
 }
