@@ -217,6 +217,39 @@ class ProjectController extends Controller {
             helper.error(error.status, error.message)
         }
     }
+    /**
+* @summary 通过projectid获取项目根目录id
+* @description 通过projectid获取项目概述
+* @router post /v1/project/queryrootfolderid
+* @request post RequestQueryRootFolderid
+* @response 200 RequestQueryRootFolderid 请求成功
+*/
+    async queryrootfolderid() {
+        const { service, helper, validate, rule, request, state, app } = this.ctx
+        const { projectid } = request.body
+        try {
+            const passed = await validate.call(this, rule.RequestQueryRootFolderid, request.body)
+            if (!passed) {
+                const err = new Error('参数验证错误')
+                err.status = 400
+                throw err
+            }
+            // 获取用户ID
+            const userId = state.user.id
+            // 验证更改权限
+            const isresult = await service.members.validate_permissions(userId, projectid, app.config.member)
+            if (!isresult) {
+                const err = new Error('无权操作')
+                err.status = 403
+                throw err
+            }
+            const rootfolderid = await service.folder.queryrootfolderid(projectid)
+            // 获取它有多少个用例
+            helper.success(rootfolderid, '获取成功')
+        } catch (error) {
+            helper.error(error.status, error.message)
+        }
+    }
 }
 
 module.exports = ProjectController

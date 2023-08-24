@@ -97,7 +97,8 @@ module.exports = {
             }
         },
         message: { type: 'string', example: '查询成功', description: '描述信息' }
+    },
+    RequestQueryRootFolderid: {
+        id: { type: 'string', description: '根目录id' }
     }
-
-
 }

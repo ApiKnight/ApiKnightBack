@@ -101,5 +101,20 @@ class FolderService extends Service {
         })
         return FolderList
     }
+    async queryrootfolderid(project_id) {
+        // 检查文件夹是否属于项目
+        const folder = await this.ctx.model.Folder.findOne({
+            where: {
+                project_id,
+                name: '根目录'
+            }
+        })
+        if (!folder) {
+            const er = new Error('参数问题')
+            er.status = 400
+            throw er
+        }
+        return folder.toJSON()
+    }
 }
 module.exports = FolderService
