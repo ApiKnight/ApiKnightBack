@@ -3,18 +3,19 @@ const Service = require('egg').Service
 
 class MockService extends Service {
    // 创建mock服务
-   async create(url, method, params, data, headers, response, project_id, api_id) {
+   async create(project_id, method, url, response, headers, params, data, apis_id, name) {
     try {
         // 创建api
         const newMock = await this.ctx.model.Mock.create({
-            url,
+            project_id,
             method,
+            url,
+            response,
+            headers,
             params,
             data,
-            headers,
-            response,
-            project_id,
-            api_id
+            apis_id,
+            name
         })
         const mockresult = newMock.toJSON()
         return mockresult
@@ -24,8 +25,16 @@ class MockService extends Service {
         throw er
     }
 
-}
-
+  }
+   // 拉取apis_id的mock服务
+   async selectMockListByApisId(apis_id) {
+    const mocklist = await this.ctx.model.Mock.findAll({
+        where: {
+            apis_id
+        }
+    })
+    return mocklist
+  }
 
 }
 

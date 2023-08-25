@@ -14,15 +14,29 @@ module.exports = app => {
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4
             },
-            url: {
-                type: DataTypes.STRING,
+            project_id: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
-                field: 'url'
+                field: 'project_id'
             },
             method: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 field: 'method'
+            },
+            url: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                field: 'url'
+            },
+            response: {
+                type: DataTypes.TEXT,
+                allowNull: false,
+                field: 'response'
+            },
+            headers: {
+                type: DataTypes.TEXT,
+                allowNull: true
             },
             params: {
                 type: DataTypes.TEXT,
@@ -32,23 +46,15 @@ module.exports = app => {
                 type: DataTypes.TEXT,
                 allowNull: true
             },
-            headers: {
-                type: DataTypes.TEXT,
-                allowNull: true
-            },
-            response: {
-                type: DataTypes.TEXT,
-                allowNull: false
-            },
             apis_id: {
                 type: DataTypes.UUID,
                 allowNull: false,
                 field: 'apis_id'
             },
-            project_id: {
-                type: DataTypes.INTEGER,
+            name: {
+                type: DataTypes.STRING,
                 allowNull: false,
-                field: 'project_id'
+                field: 'name'
             }
         },
         {

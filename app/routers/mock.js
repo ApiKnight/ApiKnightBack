@@ -12,15 +12,12 @@ module.exports = app => {
     subRouter.post('/v1/mock/real', controller.mock.requestForReal)
 
     // 创建mock服务
-    subRouter.post('/v1/mock/create', controller.mock.createMock)
+    subRouter.post('/v1/mock/create', controller.mock.create)
 
-    // // mock data
-    // const urlRegexp = pathToRegexp('/v1/mock/mockByUrl/:url*', [])
-    // allMethods.forEach(method => {
-    //     subRouter[method](urlRegexp, controller.mock.mockByUrl)
-    // })
+    // getMockList
+    subRouter.post('/v1/mock/list', controller.mock.list)
 
-    // const mockUrl = pathToRegexp('/v1/mock/:id/:url*', [])
+    // run
     allMethods.forEach(method => {
         subRouter[method]('/v1/mock/:id/:url*', controller.mock.mock)
     })

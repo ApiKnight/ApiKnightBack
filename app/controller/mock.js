@@ -3,7 +3,6 @@
 const Controller = require('egg').Controller
 const axios = require('axios')
 const buildExampleFromSchema = require('mocker-dsl-core/lib/buildExampleFromSchema')
-const BASE_TYPES = [ 'string', 'number', 'boolean', 'object', 'array' ]
 
 /**
  * @controller Mock模块
@@ -21,7 +20,7 @@ class MockController extends Controller {
          * @response 500 InternalServerError 未知错误
          */
     async requestForReal() {
-      const { helper, rule, request, validate } = this.ctx
+      const { request } = this.ctx
       const { url, method, params, data, header } = request.body
       // try {
       //   // 参数校验
@@ -60,15 +59,15 @@ class MockController extends Controller {
 
      /**
          * @summary 创建Mock服务
-         * @description 传入url, method, params, data, header参数,发送请求
+         * @description 传入url, method, project_id, params, data, header参数,发送请求
          * @router post /v1/mock/create
-         * @request body RequestApiForReal
-         * @response 200 ResponseApiForReal 请求成功
+         * @request body RequestCreateMock
+         * @response 200 ResponseCreateMock 请求成功
          * @response 400 ErrorResponse 参数问题
          */
       async create() {
         const { service, helper, request, validate, rule, app } = this.ctx
-        const { url, method, data, headers, response, params, project_id, api_id } = request.body
+        const { project_id, method, url, response, headers, params, data, apis_id, name } = request.body
         try {
           // 参数校验
           const passed = await validate.call(this, rule.RequestCreateMock, request.body)
@@ -87,20 +86,24 @@ class MockController extends Controller {
               throw err
           }
           // 尝试创建
-          await service.mock.create(url, method, data, headers, response, params, project_id, api_id)
+          await service.mock.create(project_id, method, url, response, headers, params, data, apis_id, name)
           helper.success(null, '创建成功')
       } catch (err) {
           helper.error(err.status, err.message)
       }
       }
 
-    // mock
+    // /**
+    //      * @summary Mock服务
+    //      * @description 根据动态路由匹配mock服务
+    //      * @router post /v1/mock/:id/:url*
+    //      * @response 400 ErrorResponse 参数问题
+    //      */
     async mock() {
       const apiDoc = await this.findApi()
       await this.handleMock(this.ctx.method.toLowerCase(), apiDoc)
     }
 
-    // Todo
     async findApi() {
       const method = this.ctx.method.toLowerCase()
       // 对应的 id 和 url
@@ -144,8 +147,6 @@ class MockController extends Controller {
         this.ctx.status = 405
         return
       }
-      // 校验参数
-      // await this.validateParams(apiDoc)
       this.ctx.body = this.getResponse(apiDoc) || {}
     }
 
@@ -167,6 +168,47 @@ class MockController extends Controller {
     }
       return {}
     }
+
+  // /**
+  //   * @summary 查询mock列表
+  //   * @description 通过apis_id查询mock列表
+  //   * @router post /v1/mock/list
+  //   * @request body RequestMockList
+  //   * @response 200 ResponseMockList 请求成功
+  //   * @response 400 ErrorResponse 参数问题
+  //   * @response 403 ForbiddenError 无权
+  //   * @response 401 ErrorResponseUnauthorized 未登录
+  //   * @response 500 InternalServerError 未知错误
+  //   */
+    async list() {
+      const { service, helper, request, validate, rule, app } = this.ctx
+      const { apis_id } = request.body
+      try {
+        // 参数校验
+        const passed = await validate.call(this, rule.RequestApisQuery, request.body)
+        if (!passed) {
+            const err = new Error('参数验证错误')
+            err.status = 400
+            throw err
+        }
+        // 获取请求用户ID
+        const userId = this.ctx.state.user.id
+        // 查询这个apis的信息
+        const apiresult = await service.apis.getApiById(apis_id)
+        // 判断用户是不是正式成员
+        const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.member)
+        if (!isresult) {
+            const err = new Error('无权操作')
+            err.status = 403
+            throw err
+        }
+        // 查询mock列表
+        const mocklist = await service.mock.selectMockListByApisId(apis_id)
+        helper.success(mocklist, '查询成功')
+    } catch (err) {
+        helper.error(err.status, err.message)
+    }
+  }
 }
 
 module.exports = MockController
