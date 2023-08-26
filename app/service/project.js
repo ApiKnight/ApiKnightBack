@@ -2,12 +2,13 @@
 const Service = require('egg').Service
 class ProjectService extends Service {
     // 创建项目
-    async create({ projectname, description, create_user }) {
+    async create({ projectname, description, create_user, project_img }) {
         // 创建项目
         const newProject = await this.ctx.model.Project.create({
             projectname,
             description,
-            create_user
+            create_user,
+            project_img
         })
         const project = newProject.toJSON()
         // 格式化日期
