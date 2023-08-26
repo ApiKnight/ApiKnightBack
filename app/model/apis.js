@@ -74,6 +74,7 @@ module.exports = app => {
     Apis.associate = () => {
         app.model.Apis.hasMany(app.model.Version, { foreignKey: 'apis_id' })
         app.model.Apis.belongsTo(app.model.Folder, { foreignKey: 'folder_id' })
+        // app.model.Apis.hasMany(app.model.Mock, { foreignKey: 'apis_id' })
     }
     return Apis
 }

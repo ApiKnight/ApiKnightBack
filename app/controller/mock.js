@@ -3,6 +3,7 @@
 const Controller = require('egg').Controller
 const axios = require('axios')
 const buildExampleFromSchema = require('mocker-dsl-core/lib/buildExampleFromSchema')
+const { Op } = require('sequelize')
 
 /**
  * @controller Mock模块
@@ -66,7 +67,7 @@ class MockController extends Controller {
          * @response 400 ErrorResponse 参数问题
          */
       async create() {
-        const { service, helper, request, validate, rule, app } = this.ctx
+        const { service, helper, request, validate, rule } = this.ctx
         const { project_id, method, url, response, headers, params, data, apis_id, name } = request.body
         try {
           // 参数校验
@@ -76,15 +77,15 @@ class MockController extends Controller {
               err.status = 400
               throw err
           }
-          // 获取请求用户ID
-          const userId = this.ctx.state.user.id
-          // 看看他有没有创建的资格
-          const isresult = await service.members.validate_permissions(userId, project_id, app.config.member)
-          if (!isresult) {
-              const err = new Error('无权操作')
-              err.status = 403
-              throw err
-          }
+          // // 获取请求用户ID
+          // const userId = this.ctx.state.user.id
+          // // 看看他有没有创建的资格
+          // const isresult = await service.members.validate_permissions(userId, project_id, app.config.member)
+          // if (!isresult) {
+          //     const err = new Error('无权操作')
+          //     err.status = 403
+          //     throw err
+          // }
           // 尝试创建
           await service.mock.create(project_id, method, url, response, headers, params, data, apis_id, name)
           helper.success(null, '创建成功')
@@ -106,18 +107,32 @@ class MockController extends Controller {
 
     async findApi() {
       const method = this.ctx.method.toLowerCase()
-      // 对应的 id 和 url
-      const id = this.ctx.params[0]
-      const url = this.ctx.params[1]
+      // 从url中获取id和url
+      const { id, url } = this.ctx.params
+
+      console.log(id, url, method)
+
       // 先在项目中查找
-      if (await this.ctx.model.Project.findOne({ id })) {
+      if (await this.ctx.model.Project.findOne({ where: { id } })) {
         // 接口路径模式
         // 首先进行全匹配，只允许前面多个/ 没有参数
-        const fullReg = new RegExp(`^/?${url}$`)
-        let res = await this.ctx.model.Mock.findOne({ url: fullReg, project_id: id, method })
+        const fullReg = new RegExp(`^${url.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}$`)
+
+        console.log(fullReg)
+
+        let res = await this.ctx.model.Mock.findOne({
+          where: {
+            url: {
+              [Op.regexp]: fullReg
+          },
+          project_id: id, method }
+        })
+        console.log(res)
         res.params = JSON.parse(res.params)
         res.header = JSON.parse(res.header)
         res.response = JSON.parse(res.response)
+
+
         if (!res) {
           // 全匹配未找到，则进行restful路径参数匹配，如/api/:id
           // url中每个位置都全匹配或匹配路径参数，((api)|(:.*))
@@ -154,34 +169,34 @@ class MockController extends Controller {
     getResponse(apiDoc) {
       if (apiDoc.response) {
       const schema = apiDoc.response
-      // 模拟异常请求
-      let { status, statusText } = schema
-      status = parseInt(status || 200)
-      if (isNaN(status) || status < 100) {
-        this.ctx.status = 500
-        return { message: 'Status Code不正确' }
-      } else if (status !== 200) {
-        this.ctx.status = status
-        return { message: statusText || '请求异常' }
-      }
+      // // 模拟异常请求
+      // let { status, statusText } = schema
+      // status = parseInt(status || 200)
+      // if (isNaN(status) || status < 100) {
+      //   this.ctx.status = 500
+      //   return { message: 'Status Code不正确' }
+      // } else if (status !== 200) {
+      //   this.ctx.status = status
+      //   return { message: statusText || '请求异常' }
+      // }
       return buildExampleFromSchema(schema)
     }
       return {}
     }
 
-  // /**
-  //   * @summary 查询mock列表
-  //   * @description 通过apis_id查询mock列表
-  //   * @router post /v1/mock/list
-  //   * @request body RequestMockList
-  //   * @response 200 ResponseMockList 请求成功
-  //   * @response 400 ErrorResponse 参数问题
-  //   * @response 403 ForbiddenError 无权
-  //   * @response 401 ErrorResponseUnauthorized 未登录
-  //   * @response 500 InternalServerError 未知错误
-  //   */
+  /**
+    * @summary 查询mock列表
+    * @description 通过apis_id查询mock列表
+    * @router post /v1/mock/list
+    * @request body RequestMockList
+    * @response 200 ResponseMockList 请求成功
+    * @response 400 ErrorResponse 参数问题
+    * @response 403 ForbiddenError 无权
+    * @response 401 ErrorResponseUnauthorized 未登录
+    * @response 500 InternalServerError 未知错误
+    */
     async list() {
-      const { service, helper, request, validate, rule, app } = this.ctx
+      const { service, helper, request, validate, rule } = this.ctx
       const { apis_id } = request.body
       try {
         // 参数校验
@@ -191,17 +206,17 @@ class MockController extends Controller {
             err.status = 400
             throw err
         }
-        // 获取请求用户ID
-        const userId = this.ctx.state.user.id
-        // 查询这个apis的信息
-        const apiresult = await service.apis.getApiById(apis_id)
-        // 判断用户是不是正式成员
-        const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.member)
-        if (!isresult) {
-            const err = new Error('无权操作')
-            err.status = 403
-            throw err
-        }
+        // // 获取请求用户ID
+        // const userId = this.ctx.state.user.id
+        // // 查询这个apis的信息
+        // const apiresult = await service.apis.getApiById(apis_id)
+        // // 判断用户是不是正式成员
+        // const isresult = await service.members.validate_permissions(userId, apiresult.project_id, app.config.member)
+        // if (!isresult) {
+        //     const err = new Error('无权操作')
+        //     err.status = 403
+        //     throw err
+        // }
         // 查询mock列表
         const mocklist = await service.mock.selectMockListByApisId(apis_id)
         helper.success(mocklist, '查询成功')

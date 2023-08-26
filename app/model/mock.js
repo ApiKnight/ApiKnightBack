@@ -48,8 +48,7 @@ module.exports = app => {
             },
             apis_id: {
                 type: DataTypes.UUID,
-                allowNull: false,
-                field: 'apis_id'
+                allowNull: false
             },
             name: {
                 type: DataTypes.STRING,
@@ -62,9 +61,9 @@ module.exports = app => {
             timestamps: false
         }
     )
-    Mock.associate = () => {
-        app.model.Mock.belongsTo(app.model.Apis, { foreignKey: 'apis_id' })
-        app.model.Mock.belongsTo(app.model.Project, { foreignKey: 'project_id' })
-    }
+    // Mock.associate = () => {
+    //     app.model.Mock.belongsTo(app.model.Apis, { foreignKey: 'apis_id', targetKey: 'id' })
+    //     app.model.Mock.belongsTo(app.model.Project, { foreignKey: 'project_id', targetKey: 'id' })
+    // }
     return Mock
 }
