@@ -116,40 +116,32 @@ class MockController extends Controller {
       if (await this.ctx.model.Project.findOne({ where: { id } })) {
         // 接口路径模式
         // 首先进行全匹配，只允许前面多个/ 没有参数
-        const fullReg = new RegExp(`^${url.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}$`)
-
-        console.log(fullReg)
-
         let res = await this.ctx.model.Mock.findOne({
           where: {
-            url: {
-              [Op.regexp]: fullReg
-          },
-          project_id: id, method }
+            url: { [Op.regexp]: `^/${url}$` },
+            project_id: id,
+            method
+          }
         })
-        console.log(res)
-        res.params = JSON.parse(res.params)
-        res.header = JSON.parse(res.header)
-        res.response = JSON.parse(res.response)
 
+        res = res.dataValues
+        // console.log(res)
+        // res.params = JSON.parse(res.params)
+        // res.header = JSON.parse(res.header)
+        // res.response = JSON.parse(res.response)
+        // console.log(res.response)
 
-        if (!res) {
-          // 全匹配未找到，则进行restful路径参数匹配，如/api/:id
-          // url中每个位置都全匹配或匹配路径参数，((api)|(:.*))
-          let regex = `/${url}`.replace(/(?<=\/).*?((?=(\/))|$)/g, (...args) => `((${args[0]})|(:[^\/]*))`)
-          regex = `^${regex}$`
-          res = await this.ctx.model.Mock.findOne({ url: { $regex: regex }, project_id: id, method })
-          res.params = JSON.parse(res.params)
-          res.header = JSON.parse(res.header)
-          res.response = JSON.parse(res.response)
-        }
+        // if (!res) {
+        //   // 全匹配未找到，则进行restful路径参数匹配，如/api/:id
+        //   // url中每个位置都全匹配或匹配路径参数，((api)|(:.*))
+        //   let regex = `/${url}`.replace(/(?<=\/).*?((?=(\/))|$)/g, (...args) => `((${args[0]})|(:[^\/]*))`)
+        //   regex = `^${regex}$`
+        //   res = await this.ctx.model.Mock.findOne({ url: { $regex: regex }, project_id: id, method })
+        // }
         return res
       }
       // // 找不到直接查找api_id  纯hash模式api，全匹配
       // const res = this.ctx.model.Mock.findOne({ api_id: id })
-      // res.params = JSON.parse(res.params)
-      // res.header = JSON.parse(res.header)
-      // res.response = JSON.parse(res.response)
       // return res
     }
 
@@ -167,18 +159,29 @@ class MockController extends Controller {
 
     // 获取mock响应
     getResponse(apiDoc) {
+      console.log('[apiDoc]')
+      console.log(apiDoc)
+
       if (apiDoc.response) {
-      const schema = apiDoc.response
-      // // 模拟异常请求
-      // let { status, statusText } = schema
-      // status = parseInt(status || 200)
-      // if (isNaN(status) || status < 100) {
-      //   this.ctx.status = 500
-      //   return { message: 'Status Code不正确' }
-      // } else if (status !== 200) {
-      //   this.ctx.status = status
-      //   return { message: statusText || '请求异常' }
-      // }
+      // todo 将apiDoc.response的text文本转化成对象
+      // const schema = JSON.parse(apiDoc.response)
+
+      const schema = {
+        params: [
+          {
+            key: 'id',
+            type: 'string',
+            example: 'abc123'
+          },
+          {
+            key: 'name',
+            type: 'string'
+          }
+        ]
+      }
+      console.log('[schema]')
+      console.log(schema)
+
       return buildExampleFromSchema(schema)
     }
       return {}
