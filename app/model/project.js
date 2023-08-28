@@ -44,6 +44,7 @@ module.exports = app => {
     })
     Project.associate = () => {
         app.model.Project.hasMany(app.model.Invite, { foreignKey: 'id' })
+        app.model.Project.hasMany(app.model.Mock, { foreignKey: 'project_id' })
     }
     return Project
 }
