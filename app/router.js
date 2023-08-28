@@ -14,4 +14,5 @@ module.exports = app => {
   require('./routers/apis.js')(app)
   require('./routers/members.js')(app)
   require('./routers/mock.js')(app)
+  require('./routers/monitor.js')(app)
 }
