@@ -1,5 +1,5 @@
 'use strict'
-
+const promClient = require('prom-client')
 const Controller = require('egg').Controller
 /**
  * @controller Monitor模块
@@ -31,6 +31,13 @@ class MonitorController extends Controller {
         } catch (error) {
             helper.error(error.status, error.message)
         }
+    }
+    async show() {
+        const { ctx } = this
+        const metrics = await promClient.register.metrics()
+
+        ctx.body = metrics
+        ctx.set('Content-Type', promClient.register.contentType)
     }
 }
 

@@ -38,6 +38,7 @@
     "mysql2": "^2.3.3",
     "nodemailer": "^6.9.4",
     "nodemailer-smtp-transport": "^2.7.4",
+    "prom-client": "^14.2.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

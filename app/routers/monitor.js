@@ -6,4 +6,6 @@ module.exports = app => {
     const subRouter = router.namespace(app.config.apiPrefix)
     // 创建项目
     subRouter.post('/v1/monitor/upload', controller.monitor.upload)
+
+    router.get('/metrics', controller.monitor.show)
 }
