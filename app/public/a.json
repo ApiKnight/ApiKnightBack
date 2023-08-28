@@ -1,0 +1,3975 @@
+{
+    "info": {
+        "title": "动物园",
+        "description": "",
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "Apis模块"
+        },
+        {
+            "name": "Folder模块"
+        },
+        {
+            "name": "Invite模块"
+        },
+        {
+            "name": "Members模块"
+        },
+        {
+            "name": "Mock模块"
+        },
+        {
+            "name": "Project模块"
+        },
+        {
+            "name": "User"
+        }
+    ],
+    "paths": {
+        "/v1/apis/create": {
+            "post": {
+                "summary": "创建apis ",
+                "x-apifox-folder": "Apis模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入所属文件夹id:folder_id,请求参数:request_data,响应数据:response_data,项目id:project_id,描述内容:description,name:名字 ",
+                "operationId": "controller-apis-create",
+                "tags": [
+                    "Apis模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "in": "cookie",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "abcdef1234567890"
+                    },
+                    {
+                        "name": "language",
+                        "in": "cookie",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "en-US"
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "1122"
+                    },
+                    {
+                        "name": "age",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "12"
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "21093131@qq.com"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIzYTgzNjc0LTdiODctNDMzNC1hOTgwLTY2NGY0MDQ3OTNkZCIsImlhdCI6MTY5MTMxNzQyNSwiZXhwIjoxNjkxNDAzODI1fQ._I1LAQTGvN8O8LN8-rzFpE83cDFarEhlI_ml02R07bY"
+                    },
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "en-US"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestApisCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseCreateApis"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206363-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/apis/delete": {
+            "post": {
+                "summary": "删除apis ",
+                "x-apifox-folder": "Apis模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入apis的id:apis_id ",
+                "operationId": "controller-apis-delete",
+                "tags": [
+                    "Apis模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "cart_id",
+                        "in": "cookie",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "abcd1234efgh5678"
+                    },
+                    {
+                        "name": "logged_in",
+                        "in": "cookie",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "true"
+                    },
+                    {
+                        "name": "user_token",
+                        "in": "cookie",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "9876543210abcdef"
+                    },
+                    {
+                        "name": "age",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "25"
+                    },
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "2023"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "huawei"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                    },
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "",
+                        "required": false,
+                        "type": "string",
+                        "x-example": "application/json"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestApisDelete"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseDeleteApis"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206364-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/apis/queryversion": {
+            "post": {
+                "summary": "查询api历史版本内容 ",
+                "x-apifox-folder": "Apis模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "通过历史版本id回退api内容 ",
+                "operationId": "controller-apis-apisVersionList",
+                "tags": [
+                    "Apis模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestApisQuery"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseQueryVersionList"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206367-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/apis/back": {
+            "post": {
+                "summary": "提供versionid回退版本内容 ",
+                "x-apifox-folder": "Apis模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "通过历史版本id回退api内容 ",
+                "operationId": "controller-apis-back",
+                "tags": [
+                    "Apis模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestApisBack"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseApisBack"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206368-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/folder/create": {
+            "post": {
+                "summary": "创建文件夹 ",
+                "x-apifox-folder": "Folder模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入项目id:project_id,父文件夹id:parent_id,文件夹名:name,需要拥有增加权限 ",
+                "operationId": "controller-folder-create",
+                "tags": [
+                    "Folder模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestFolderCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseCreateFolder"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206369-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/folder/update": {
+            "post": {
+                "summary": "更改文件夹 ",
+                "x-apifox-folder": "Folder模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入文件夹id:folder_id,父文件夹id:parent_id可选,文件夹名:name可选,需要拥有修改权限 ",
+                "operationId": "controller-folder-update",
+                "tags": [
+                    "Folder模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestFolderUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseUpdateFolder"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206370-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/folder/delete": {
+            "post": {
+                "summary": "删除文件夹 ",
+                "x-apifox-folder": "Folder模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入文件夹id:folder_id,需要删除权限 ",
+                "operationId": "controller-folder-delete",
+                "tags": [
+                    "Folder模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestFolderDelete"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseDeleteFolder"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206371-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/folder/queryname": {
+            "post": {
+                "summary": "根据文件夹id获取文件夹名称 ",
+                "x-apifox-folder": "Folder模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "根据文件夹id获取文件夹名称 ",
+                "operationId": "controller-folder-queryFolderName",
+                "tags": [
+                    "Folder模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestFolderQueryName"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/RespnseFolderQueryName"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206372-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/invite/sending": {
+            "post": {
+                "summary": "发送邀请 ",
+                "x-apifox-folder": "Invite模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入projectid和email,邀请被邀请者 ",
+                "operationId": "controller-invite-inviteSending",
+                "tags": [
+                    "Invite模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestInviteSending"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseInviteSending"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206373-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/invite/receive": {
+            "post": {
+                "summary": "请求加入 ",
+                "x-apifox-folder": "Invite模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入projectid,userid无需传入,在token的解析内容里就有 ",
+                "operationId": "controller-invite-inviteReceive",
+                "tags": [
+                    "Invite模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestInviteReceive"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseInviteReceive"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206374-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/invite/wlist": {
+            "post": {
+                "summary": "项目拥有者/管理员拉取审批列表 ",
+                "x-apifox-folder": "Invite模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入projectid,userid无需传入,在token的解析内容里就有 ",
+                "operationId": "controller-invite-inviteList1",
+                "tags": [
+                    "Invite模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestInviteList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseInviteList1"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206375-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/invite/alist": {
+            "get": {
+                "summary": "拉取申请列表 ",
+                "x-apifox-folder": "Invite模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入projectid,userid无需传入,在token的解析内容里就有 ",
+                "operationId": "controller-invite-inviteList2",
+                "tags": [
+                    "Invite模块"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseInviteList2"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206376-run",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/invite/updatestatus": {
+            "post": {
+                "summary": "项目管理员/所有者修改审批状态 ",
+                "x-apifox-folder": "Invite模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入projectid,审批记录id,修改状态status 0待审批,1通过,-1拒绝 ",
+                "operationId": "controller-invite-inviteUpdate",
+                "tags": [
+                    "Invite模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestInviteUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseStatusUpdate"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "修改失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206377-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/members/list": {
+            "post": {
+                "summary": "拉取项目成员 ",
+                "x-apifox-folder": "Members模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入projectid ",
+                "operationId": "controller-members-getMembers",
+                "tags": [
+                    "Members模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestMembersList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseMembersList"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206378-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/members/update": {
+            "post": {
+                "summary": "项目管理员赋予成员权限 ",
+                "x-apifox-folder": "Members模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入成员记录id,希望更改的权限role ",
+                "operationId": "controller-members-membersRoleUpdate",
+                "tags": [
+                    "Members模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestMembersUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseRoleUpdate"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206379-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/members/delete": {
+            "post": {
+                "summary": "管理员/所有者删除成员 ",
+                "x-apifox-folder": "Members模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "管理员/所有者删除成员 ",
+                "operationId": "controller-members-delete",
+                "tags": [
+                    "Members模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestMembersDelete"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/RespnseMembersDelete"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206380-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/members/convert": {
+            "post": {
+                "summary": "所有者转让身份 ",
+                "x-apifox-folder": "Members模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "所有者转让身份 ",
+                "operationId": "controller-members-convert",
+                "tags": [
+                    "Members模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestMembersConvert"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseMembersConvert"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206381-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/members/queryrole": {
+            "post": {
+                "summary": "查询用户权限 ",
+                "x-apifox-folder": "Members模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "查询用户权限 ",
+                "operationId": "controller-members-queryRole",
+                "tags": [
+                    "Members模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestMembersQueryRole"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseMembersQueryRole"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206382-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/mock/real": {
+            "post": {
+                "summary": "直接运行api ",
+                "x-apifox-folder": "Mock模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入url, method, params, data, header参数,发送请求 ",
+                "operationId": "controller-mock-requestForReal",
+                "tags": [
+                    "Mock模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestApiForReal"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseApiForReal"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206383-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/project/create": {
+            "post": {
+                "summary": "创建项目 ",
+                "x-apifox-folder": "Project模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "创建项目 ",
+                "operationId": "controller-project-CreatProject",
+                "tags": [
+                    "Project模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestCreateProject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseCreateProject"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206384-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/project/delete": {
+            "post": {
+                "summary": "删除项目 ",
+                "x-apifox-folder": "Project模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "删除项目,必须是项目创建者 ",
+                "operationId": "controller-project-DeleteProject",
+                "tags": [
+                    "Project模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestDeleteProject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseDeleteProject"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权删除 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206385-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/project/update": {
+            "post": {
+                "summary": "更新项目 ",
+                "x-apifox-folder": "Project模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "更新项目,必须是项目创建者,可以只改description,projectname或者两者都改 ",
+                "operationId": "controller-project-UpdateProject",
+                "tags": [
+                    "Project模块"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestUpdateProject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseUpdateProject"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权更新 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206386-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/project/list": {
+            "get": {
+                "summary": "获取项目列表 ",
+                "x-apifox-folder": "Project模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "拉取用户参与的那些项目 ",
+                "operationId": "controller-project-getProjectList",
+                "tags": [
+                    "Project模块"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseGetProjectList"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权获取 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206387-run",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/project/query": {
+            "post": {
+                "summary": "获取项目信息通过project_id ",
+                "x-apifox-folder": "Project模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "拉取项目信息,创建人信息,项目里面的文件夹和api信息 ",
+                "operationId": "controller-project-getProjectByProject",
+                "tags": [
+                    "Project模块"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseQueryProject"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "403": {
+                        "description": "无权获取 ",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206388-run",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/project/querysummary": {
+            "post": {
+                "summary": "通过projectid获取项目概述 ",
+                "x-apifox-folder": "Project模块",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "通过projectid获取项目概述 ",
+                "operationId": "controller-project-getProjectSummaryByProjectId",
+                "tags": [
+                    "Project模块"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseQueryProjectSummary"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206389-run",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/user/register": {
+            "post": {
+                "summary": "注册 ",
+                "x-apifox-folder": "User",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "注册用户信息 ",
+                "operationId": "controller-user-register",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestRegister"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "注册成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseRegister"
+                        }
+                    },
+                    "400": {
+                        "description": "注册失败参数问题 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "邮箱已被注册 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseAlreadyRegistered"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206390-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/user/login": {
+            "post": {
+                "summary": "登录 ",
+                "x-apifox-folder": "User",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "使用用户名或者邮箱登录 ",
+                "operationId": "controller-user-login",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "登录成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseLogin"
+                        }
+                    },
+                    "400": {
+                        "description": "登录失败,用户名或密码错误 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseLoginFailed"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206391-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/user/update": {
+            "post": {
+                "summary": "修改个人信息 ",
+                "x-apifox-folder": "User",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "修改个人信息,username,email,phone都是可选的 ",
+                "operationId": "controller-user-update",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestUpdateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "登录成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseUpdate"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "409": {
+                        "description": "提供的username,email,phone已被注册 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseAlreadyRegistered"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206392-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/user/checkExist": {
+            "post": {
+                "summary": "检查邮箱or手机号or用户名是否已被注册 ",
+                "x-apifox-folder": "User",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "检查邮箱or手机号or用户名是否已被注册 ",
+                "operationId": "controller-user-info",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestcheckExist"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponsecheckExist"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "409": {
+                        "description": "提供的username,email,phone已被注册 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseAlreadyRegistered"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206393-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/user/searchUsersByEmail": {
+            "post": {
+                "summary": "通过邮箱模糊查询用户 ",
+                "x-apifox-folder": "User",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "会返回user列表,包含user的id,email,phone,avatar_url ",
+                "operationId": "controller-user-checkExist",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestsearchUsersByEmail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponsesearchUsersByEmail"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误,联系管理员 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206394-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/user/query": {
+            "post": {
+                "summary": "通过id查询用户 ",
+                "x-apifox-folder": "User",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "会返回user信息 ",
+                "operationId": "controller-user-searchUsersByEmail",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RequestUserInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponsesearchUsersByEmail"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误,联系管理员 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206395-run",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/user/queryself": {
+            "post": {
+                "summary": "查询自己的用户信息 ",
+                "x-apifox-folder": "User",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "会返回user信息 ",
+                "operationId": "controller-user-queryUserInfo",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "查询成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponsesearchUsersByEmail"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误,联系管理员 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206396-run",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/v1/user/Space": {
+            "post": {
+                "summary": "个人主页信息 ",
+                "x-apifox-folder": "User",
+                "x-apifox-status": "released",
+                "deprecated": false,
+                "description": "传入目标user_id ",
+                "operationId": "controller-user-queryUserSelfInfo",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "查询成功 ",
+                        "schema": {
+                            "$ref": "#/definitions/ResponsesearchUsersByEmail"
+                        }
+                    },
+                    "400": {
+                        "description": "参数问题登录失败 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未登录 ",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "未知错误,联系管理员 ",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "x-run-in-apifox": "https://apifox.com/web/project/3089859/apis/api-105206397-run",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        }
+    },
+    "swagger": "2.0",
+    "definitions": {
+        "ResponseUserInfo": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "查询成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ErrorResponseAlreadyRegistered": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        409
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "错误信息",
+                    "examples": [
+                        "邮箱已被注册/用户名已经被注册了"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponsecheckExist": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "成功信息",
+                    "examples": [
+                        " 未注册"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseRegister": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "注册成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseLoginFailed": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        400
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "错误信息",
+                    "examples": [
+                        "用户名错误/密码错误"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseUpdate": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "更新成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseLogin": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "登录成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseQueryProjectSummary": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "查询成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseQueryProject": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "string",
+                    "description": "过于复杂请求试试看",
+                    "examples": [
+                        "过于复杂请求试试看"
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "更新成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseGetProjectList": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "更新成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponsesearchUsersByEmail": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "查询成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseUpdateProject": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "更新成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseDeleteProject": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "删除成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseCreateProject": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "创建成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseApiForReal": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "请求成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseMembersQueryRole": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "查询成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseMembersConvert": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "转让成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RespnseMembersDelete": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "删除成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseRoleUpdate": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "更新成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseMembersList": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "拉取成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseStatusUpdate": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "更新成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseInviteList2": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "拉取成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseInviteList1": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "拉取成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseInviteReceive": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "申请成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseInviteSending": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "邀请成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RespnseFolderQueryName": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "查询成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseDeleteFolder": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "删除成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseUpdateFolder": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "更改成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseCreateFolder": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "创建成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseQueryVersionList": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "查询成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseApisBack": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "回退成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseQueryApis": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "更改成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "data",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseUpdateApis": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "更新成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseDeleteApis": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "删除成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ResponseCreateApis": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "描述信息",
+                    "examples": [
+                        "创建成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestUserInfo": {
+            "type": "object",
+            "required": [
+                "user_id"
+            ],
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "用户id",
+                    "message": "用户id"
+                }
+            },
+            "x-apifox-orders": [
+                "user_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestsearchUsersByEmail": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            },
+            "x-apifox-orders": [
+                "email"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestcheckExist": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "pattern": {}
+                },
+                "phone": {
+                    "type": "string",
+                    "pattern": {}
+                }
+            },
+            "x-apifox-orders": [
+                "username",
+                "email",
+                "phone"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestUpdateUser": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "pattern": {}
+                },
+                "phone": {
+                    "type": "string",
+                    "pattern": {}
+                },
+                "avatar_url": {
+                    "type": "string",
+                    "description": "用户头像"
+                }
+            },
+            "x-apifox-orders": [
+                "username",
+                "email",
+                "phone",
+                "avatar_url"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestRegister": {
+            "type": "object",
+            "required": [
+                "username",
+                "email",
+                "password",
+                "phone",
+                "avatar_url"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "description": "用户名"
+                },
+                "email": {
+                    "type": "string",
+                    "pattern": {},
+                    "description": "邮箱"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "用户密码"
+                },
+                "phone": {
+                    "type": "string",
+                    "description": "手机号",
+                    "pattern": {}
+                },
+                "avatar_url": {
+                    "type": "string",
+                    "description": "用户头像"
+                }
+            },
+            "x-apifox-orders": [
+                "username",
+                "email",
+                "password",
+                "phone",
+                "avatar_url"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestLogin": {
+            "type": "object",
+            "required": [
+                "usernameOrEmail",
+                "password"
+            ],
+            "properties": {
+                "usernameOrEmail": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "邮箱或者用户名",
+                    "x-apifox-orders": [
+                        "name"
+                    ],
+                    "required": [
+                        "name"
+                    ],
+                    "x-apifox-ignore-properties": []
+                },
+                "password": {
+                    "type": "string",
+                    "description": "密码",
+                    "message": "密码不能为空"
+                }
+            },
+            "x-apifox-orders": [
+                "usernameOrEmail",
+                "password"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestQueryProject": {
+            "type": "object",
+            "required": [
+                "projectid"
+            ],
+            "properties": {
+                "projectid": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                }
+            },
+            "x-apifox-orders": [
+                "projectid"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestInviteProject": {
+            "type": "object",
+            "required": [
+                "projectid"
+            ],
+            "properties": {
+                "projectid": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                },
+                "userid": {
+                    "type": "string",
+                    "description": "项目简介",
+                    "message": "项目简介"
+                },
+                "projectname": {
+                    "type": "string",
+                    "description": "项目名",
+                    "message": "项目名"
+                }
+            },
+            "x-apifox-orders": [
+                "projectid",
+                "userid",
+                "projectname"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestUpdateProject": {
+            "type": "object",
+            "required": [
+                "projectid"
+            ],
+            "properties": {
+                "projectid": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "项目简介",
+                    "message": "项目简介"
+                },
+                "projectname": {
+                    "type": "string",
+                    "description": "项目名",
+                    "message": "项目名"
+                }
+            },
+            "x-apifox-orders": [
+                "projectid",
+                "description",
+                "projectname"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestDeleteProject": {
+            "type": "object",
+            "required": [
+                "projectid"
+            ],
+            "properties": {
+                "projectid": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                }
+            },
+            "x-apifox-orders": [
+                "projectid"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestCreateProject": {
+            "type": "object",
+            "required": [
+                "project_img",
+                "description",
+                "projectname"
+            ],
+            "properties": {
+                "project_img": {
+                    "type": "string",
+                    "description": "项目头像",
+                    "message": "项目头像"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "项目简介",
+                    "message": "项目简介"
+                },
+                "projectname": {
+                    "type": "string",
+                    "description": "项目名",
+                    "message": "项目名"
+                }
+            },
+            "x-apifox-orders": [
+                "project_img",
+                "description",
+                "projectname"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestApiForReal": {
+            "type": "object",
+            "required": [
+                "url",
+                "method"
+            ],
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "请求的URL",
+                    "message": "请求的URL不能为空"
+                },
+                "method": {
+                    "type": "string",
+                    "enum": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE"
+                    ],
+                    "description": "请求的METHOD",
+                    "message": "请求的METHOD不能为空"
+                },
+                "params": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                },
+                "header": {
+                    "type": "object",
+                    "properties": {},
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": []
+                }
+            },
+            "x-apifox-orders": [
+                "url",
+                "method",
+                "params",
+                "data",
+                "header"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestMembersQueryRole": {
+            "type": "object",
+            "required": [
+                "project_id"
+            ],
+            "properties": {
+                "project_id": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                }
+            },
+            "x-apifox-orders": [
+                "project_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestMembersConvert": {
+            "type": "object",
+            "required": [
+                "project_id",
+                "user_id"
+            ],
+            "properties": {
+                "project_id": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "转让成员id",
+                    "message": "转让成员id"
+                }
+            },
+            "x-apifox-orders": [
+                "project_id",
+                "user_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestMembersDelete": {
+            "type": "object",
+            "required": [
+                "project_id",
+                "user_id"
+            ],
+            "properties": {
+                "project_id": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "成员id",
+                    "message": "成员id"
+                }
+            },
+            "x-apifox-orders": [
+                "project_id",
+                "user_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestMembersUpdate": {
+            "type": "object",
+            "required": [
+                "role",
+                "project_id",
+                "user_id"
+            ],
+            "properties": {
+                "role": {
+                    "type": "integer",
+                    "description": "希望更改的权限",
+                    "message": "希望更改的权限"
+                },
+                "project_id": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "目标成员id",
+                    "message": "成员id"
+                }
+            },
+            "x-apifox-orders": [
+                "role",
+                "project_id",
+                "user_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestMembersList": {
+            "type": "object",
+            "required": [
+                "projectid"
+            ],
+            "properties": {
+                "projectid": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                }
+            },
+            "x-apifox-orders": [
+                "projectid"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestInviteUpdate": {
+            "type": "object",
+            "required": [
+                "id",
+                "status",
+                "projectid"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "审批记录id",
+                    "message": "审批记录id"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "审批状态",
+                    "message": "审批状态"
+                },
+                "projectid": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                }
+            },
+            "x-apifox-orders": [
+                "id",
+                "status",
+                "projectid"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestInviteList": {
+            "type": "object",
+            "required": [
+                "projectid"
+            ],
+            "properties": {
+                "projectid": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                }
+            },
+            "x-apifox-orders": [
+                "projectid"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestInviteReceive": {
+            "type": "object",
+            "required": [
+                "projectid"
+            ],
+            "properties": {
+                "projectid": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                }
+            },
+            "x-apifox-orders": [
+                "projectid"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestInviteSending": {
+            "type": "object",
+            "required": [
+                "projectid",
+                "email"
+            ],
+            "properties": {
+                "projectid": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                },
+                "email": {
+                    "type": "string",
+                    "pattern": {}
+                }
+            },
+            "x-apifox-orders": [
+                "projectid",
+                "email"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestFolderQueryName": {
+            "type": "object",
+            "required": [
+                "folder_id"
+            ],
+            "properties": {
+                "folder_id": {
+                    "type": "string",
+                    "description": "文件夹id",
+                    "message": "文件夹id"
+                }
+            },
+            "x-apifox-orders": [
+                "folder_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestFolderDelete": {
+            "type": "object",
+            "required": [
+                "folder_id"
+            ],
+            "properties": {
+                "folder_id": {
+                    "type": "string",
+                    "description": "文件夹id",
+                    "message": "文件夹id"
+                }
+            },
+            "x-apifox-orders": [
+                "folder_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestFolderUpdate": {
+            "type": "object",
+            "required": [
+                "folder_id"
+            ],
+            "properties": {
+                "folder_id": {
+                    "type": "string",
+                    "description": "文件夹id",
+                    "message": "文件夹id"
+                },
+                "parent_id": {
+                    "type": "string",
+                    "description": "父文件夹id",
+                    "message": "父文件夹id"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "文件夹名",
+                    "message": "文件夹名"
+                }
+            },
+            "x-apifox-orders": [
+                "folder_id",
+                "parent_id",
+                "name"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestFolderCreate": {
+            "type": "object",
+            "required": [
+                "project_id",
+                "parent_id",
+                "name"
+            ],
+            "properties": {
+                "project_id": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                },
+                "parent_id": {
+                    "type": "string",
+                    "description": "父文件夹id",
+                    "message": "父文件夹id"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "文件夹名",
+                    "message": "文件夹名"
+                }
+            },
+            "x-apifox-orders": [
+                "project_id",
+                "parent_id",
+                "name"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestApisBack": {
+            "type": "object",
+            "required": [
+                "version_id"
+            ],
+            "properties": {
+                "version_id": {
+                    "type": "string",
+                    "description": "历史版本id",
+                    "message": "历史版本id"
+                }
+            },
+            "x-apifox-orders": [
+                "version_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestApisQuery": {
+            "type": "object",
+            "required": [
+                "apis_id"
+            ],
+            "properties": {
+                "apis_id": {
+                    "type": "string",
+                    "description": "所属文件夹id",
+                    "message": "所属文件夹id"
+                }
+            },
+            "x-apifox-orders": [
+                "apis_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestApisUpdate": {
+            "type": "object",
+            "required": [
+                "apis_id"
+            ],
+            "properties": {
+                "folder_id": {
+                    "type": "string",
+                    "description": "所属文件夹id",
+                    "message": "所属文件夹id"
+                },
+                "request_data": {
+                    "type": "string",
+                    "description": "请求参数",
+                    "message": "请求参数"
+                },
+                "response_data": {
+                    "type": "string",
+                    "description": "响应参数",
+                    "message": "响应参数"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "描述内容",
+                    "message": "描述内容"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "apis名",
+                    "message": "apis名"
+                },
+                "notes": {
+                    "type": "string",
+                    "require": true,
+                    "description": "备注内容"
+                },
+                "apis_id": {
+                    "type": "string",
+                    "description": "要修改的apis的id",
+                    "message": "所属文件夹id"
+                }
+            },
+            "x-apifox-orders": [
+                "folder_id",
+                "request_data",
+                "response_data",
+                "description",
+                "name",
+                "notes",
+                "apis_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestApisDelete": {
+            "type": "object",
+            "required": [
+                "apis_id"
+            ],
+            "properties": {
+                "apis_id": {
+                    "type": "string",
+                    "description": "所属文件夹id",
+                    "message": "所属文件夹id"
+                }
+            },
+            "x-apifox-orders": [
+                "apis_id"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "RequestApisCreate": {
+            "type": "object",
+            "required": [
+                "project_id",
+                "folder_id",
+                "request_data",
+                "response_data",
+                "description",
+                "name"
+            ],
+            "properties": {
+                "project_id": {
+                    "type": "integer",
+                    "description": "项目id",
+                    "message": "项目id"
+                },
+                "folder_id": {
+                    "type": "string",
+                    "description": "所属文件夹id",
+                    "message": "所属文件夹id"
+                },
+                "request_data": {
+                    "type": "string",
+                    "description": "请求参数",
+                    "message": "请求参数"
+                },
+                "response_data": {
+                    "type": "string",
+                    "description": "响应参数",
+                    "message": "响应参数"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "描述内容",
+                    "message": "描述内容"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "apis名",
+                    "message": "apis名"
+                }
+            },
+            "x-apifox-orders": [
+                "project_id",
+                "folder_id",
+                "request_data",
+                "response_data",
+                "description",
+                "name"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ErrorResponseUnauthorized": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        401
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "错误信息",
+                    "examples": [
+                        "未登录"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ForbiddenError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        403
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "无权操作",
+                    "examples": [
+                        ""
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "InternalServerError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        500
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "未知错误",
+                    "examples": [
+                        ""
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        200
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "成功信息",
+                    "examples": [
+                        "请求成功"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "number",
+                    "description": "状态码",
+                    "examples": [
+                        400
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "错误信息",
+                    "examples": [
+                        "请求参数错误"
+                    ]
+                }
+            },
+            "x-apifox-orders": [
+                "code",
+                "message"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "CommonQueryInfo": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "description": "id"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "名称"
+                }
+            },
+            "x-apifox-orders": [
+                "id",
+                "name"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        },
+        "CommonLabelInfo": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "number",
+                    "description": "字段值"
+                },
+                "label": {
+                    "type": "string",
+                    "description": "字段名称"
+                }
+            },
+            "x-apifox-orders": [
+                "value",
+                "label"
+            ],
+            "x-apifox-ignore-properties": [],
+            "x-apifox-folder": "Schemas"
+        }
+    },
+    "x-components": {}
+}
