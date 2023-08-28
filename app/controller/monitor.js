@@ -35,7 +35,6 @@ class MonitorController extends Controller {
     async show() {
         const { ctx } = this
         const metrics = await promClient.register.metrics()
-
         ctx.body = metrics
         ctx.set('Content-Type', promClient.register.contentType)
     }
