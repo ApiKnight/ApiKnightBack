@@ -2,14 +2,8 @@
 const jwt = require('jsonwebtoken')
 const os = require('os')
 const { v4: uuidv4 } = require('uuid')
-const WechatCrypt = require('./wechatCrypt')
 const moment = require('moment')
-
-/**
- * 新旧接口兼容的版本号标识，有不兼容的代码时更新该版本号，主要为了应对审核以及通过 24h 内没有更新到最新版本的用户
- * 当需要发新版本时，用户已全部更新到最新版本，所以每次只要有不兼容的更新，只需要更新该版本号即可
- */
-const version = [ 1, 0, 0 ]
+const version = [1, 0, 0]
 
 module.exports = {
   /**
@@ -46,19 +40,6 @@ module.exports = {
    */
   createUid() {
     return uuidv4()
-  },
-  /**
-   * 解密微信数据
-   * @param {String} data 微信数据
-   * @param {string} data.appId 微信公众号的 appId
-   * @param {string} data.sessionKey 微信授权登录成功后的 sessionKey
-   * @param {string} data.encryptedData 需要解密的数据
-   * @param {string} data.iv 初始向量
-   * @return {*} 返回解密后的数据
-   */
-  wechatCrypt({ appId, sessionKey, encryptedData, iv }) {
-    const res = new WechatCrypt(appId, sessionKey)
-    return res.decryptData(encryptedData, iv)
   },
   /**
    * 判断版本号是否大于指定版本
