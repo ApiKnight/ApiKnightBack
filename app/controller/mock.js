@@ -125,11 +125,6 @@ class MockController extends Controller {
         })
 
         res = res.dataValues
-        // console.log(res)
-        // res.params = JSON.parse(res.params)
-        // res.header = JSON.parse(res.header)
-        // res.response = JSON.parse(res.response)
-        // console.log(res.response)
 
         // if (!res) {
         //   // 全匹配未找到，则进行restful路径参数匹配，如/api/:id
@@ -163,25 +158,10 @@ class MockController extends Controller {
       console.log(apiDoc)
 
       if (apiDoc.response) {
-      // todo 将apiDoc.response的text文本转化成对象
-      // const schema = JSON.parse(apiDoc.response)
-
-      const schema = {
-        params: [
-          {
-            key: 'id',
-            type: 'string',
-            example: 'abc123'
-          },
-          {
-            key: 'name',
-            type: 'string'
-          }
-        ]
-      }
+      // 将apiDoc.response的text文本转化成对象
+      const schema = JSON.parse(apiDoc.response)
       console.log('[schema]')
       console.log(schema)
-
       return buildExampleFromSchema(schema)
     }
       return {}
