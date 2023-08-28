@@ -21,7 +21,7 @@ module.exports = app => {
   /**
    * 中间件配置
    */
-  config.middleware = [ 'catchError', 'permission' ]
+  config.middleware = ['catchError', 'permission']
 
   /**
    * 数据库相关配置
@@ -118,7 +118,7 @@ module.exports = app => {
    * 权限配置
    */
   config.permission = {
-    // 接口白名单配置
+    // 接口白名单配置http://127.0.0.1:7001/api/v1/swaggerdoc
     whiteUrls: [
       `${apiPrefix}/v1/user/login`,
       `${apiPrefix}/v1/user/register`,
@@ -127,7 +127,8 @@ module.exports = app => {
       `${apiPrefix}/v1/mock/real`,
       `${apiPrefix}/v1/monitor/upload`,
       '/metrics',
-      `${apiPrefix}/v1/mock/:id/:url*`
+      `${apiPrefix}/v1/mock/:id/:url*`,
+      '/swaggerdoc'
     ]
   }
 
@@ -160,7 +161,7 @@ module.exports = app => {
       description: `${userConfig.appName} 接口平台。`,
       version: '1.0.0'
     },
-    schemes: [ 'http', 'https' ]
+    schemes: ['http', 'https']
   }
   /**
    * 小程序平台相关配置，可往下新增头条小程序、百度小程序、钉钉小程序等相关配置
