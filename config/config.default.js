@@ -124,7 +124,8 @@ module.exports = app => {
       `${apiPrefix}/v1/user/register`,
       `${apiPrefix}/v1/user/checkExist`,
       `${apiPrefix}/v1/project/querysummary`,
-      `${apiPrefix}/v1/mock/real`
+      `${apiPrefix}/v1/mock/real`,
+      `${apiPrefix}/v1/mock/:id/:url*`
     ]
   }
 
