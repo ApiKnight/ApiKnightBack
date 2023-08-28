@@ -9,7 +9,11 @@ module.exports = (options, app) => {
   return async (ctx, next) => {
     const whiteUrls = options.whiteUrls || []
     // 如果 ctx.url 在白名单中
-    const isWhiteUrl = whiteUrls.some(whiteUrl => ctx.url.startsWith(whiteUrl))
+    let isWhiteUrl = whiteUrls.some(whiteUrl => ctx.url.startsWith(whiteUrl))
+    // 特殊情况
+    const reg = new RegExp('^/api/v1/mock/[0-9]+')
+    if (reg.test(ctx.url)) isWhiteUrl = true
+    console.log('isWhiteUrl', isWhiteUrl, ctx.url, ctx.app.config.apiPrefix)
     // ctx.url.match(new RegExp(`^${config.apiPrefix}`))
     if (isWhiteUrl || !ctx.url.match(new RegExp(`^${ctx.app.config.apiPrefix}`))) {
       await next()
