@@ -7,6 +7,7 @@
     "declarations": true
   },
   "scripts": {
+    "start:https": "egg-scripts start --daemon --port=443 --https.key='/home/ubuntu/ApiKnight/ssh_config/lyyfsq.club_nginx/lyyfsq.club.key' --https.cert='/home/ubuntu/ApiKnight/ssh_config/lyyfsq.club_nginx/lyyfsq.club_bundle.crt'",
     "start": "egg-scripts start --daemon --title=template-node-egg --port=7002",
     "stop": "egg-scripts stop --title=template-node-egg --port=7002",
     "start:test": "npx cross-env cross-env EGG_SERVER_ENV=test egg-scripts start --daemon --title=template-node-egg-test --port=7001",
