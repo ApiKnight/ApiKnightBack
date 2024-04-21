@@ -185,8 +185,8 @@ module.exports = app => {
       port: 465,
       secure: true,
       auth: {
-        user: '210813750@qq.com', // 发件人的 QQ 邮箱
-        pass: 'edzfscpodgxnbiba'// 邮箱授权码，不是登录密码
+        user: process.env.ApiKnight_EMAIL_ACCESS_KEY, // 发件人的 QQ 邮箱
+        pass: process.env.ApiKnight_EMAIL_KEY// 邮箱授权码，不是登录密码
       }
     }
   }

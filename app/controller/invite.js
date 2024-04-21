@@ -52,7 +52,7 @@ class InviteController extends Controller {
             const transporter = nodemailer.createTransport(app.config.mailer.transport)
             // to应该是被邀请者的email
             const mailOptions = {
-                from: '210813750@qq.com', // 发件人的 QQ 邮箱
+                from: process.env.ApiKnight_EMAIL_ACCESS_KEY, // 发件人的 QQ 邮箱
                 to: email,
                 subject: `${createuser.username}邀请你加入${projectresult.projectname}项目组`,
                 html: `
